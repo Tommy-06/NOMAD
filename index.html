@@ -525,19 +525,20 @@
                 const appleIcon = document.getElementById('appleTouchIcon');
                 if (appleIcon) appleIcon.href = pngDataUrl;
 
-                // Crea Web App Manifest dinamico per Android/Chrome/Desktop PWA
-                const manifest = {
-                    name: "NOMAD // ATLAS — Travel Tracker",
-                    short_name: "NOMAD",
-                    description: "Atlante interattivo di viaggio e passaporto digitale",
-                    display: "standalone",
-                    background_color: "#050505",
-                    theme_color: "#050505",
-                    icons: [
-                        { src: pngDataUrl, sizes: "192x192", type: "image/png" },
-                        { src: pngDataUrl, sizes: "512x512", type: "image/png", purpose: "any maskable" }
-                    ]
-                };
+                // Pulsante per scaricare l'icona PNG 512x512
+                const dlBtn = document.getElementById('downloadAppIconBtn');
+                if (dlBtn) {
+                    dlBtn.onclick = () => {
+                        const a = document.createElement('a');
+                        a.href = pngDataUrl;
+                        a.download = 'NOMAD_App_Logo_512x512.png';
+                        a.click();
+                    };
+                }
+                URL.revokeObjectURL(url);
+            };
+            img.src = url;
+        }
                 const manifestBlob = new Blob([JSON.stringify(manifest)], { type: 'application/json' });
                 const manifestLink = document.createElement('link');
                 manifestLink.rel = 'manifest';
