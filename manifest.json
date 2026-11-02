@@ -1,0 +1,17 @@
+{
+  "name": "NOMAD",
+  "short_name": "NOMAD",
+  "description": "Pianifica l'itinerario, spingi oltre il limite.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#1a0c24",
+  "theme_color": "#1a0c24",
+  "icons": [
+    {
+      "src": "./logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
