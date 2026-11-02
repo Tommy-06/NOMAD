@@ -1,11 +1,11 @@
 {
-  "name": "NOMAD",
+  "name": "NOMAD // ATLAS — Travel Tracker",
   "short_name": "NOMAD",
-  "description": "Pianifica l'itinerario, spingi oltre il limite.",
-  "start_url": "/",
+  "description": "Atlante interattivo di viaggio e passaporto digitale",
+  "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#1a0c24",
-  "theme_color": "#1a0c24",
+  "background_color": "#050505",
+  "theme_color": "#050505",
   "icons": [
     {
       "src": "./logo.png",
