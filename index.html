@@ -1,11 +1,9 @@
 <!DOCTYPE html>
 <html lang="it" class="dark">
 <head>
-    <link rel="manifest" href="manifest.json">
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>NOMAD // ATLAS — Travel Tracker</title>
-
 
     <!-- App & Web Icons (SVG Vettoriale fedele al logo NOMAD caricato + PNG generato dinamicamente per iOS/Android) -->
     <link id="dynamicFavicon" rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' rx='115' fill='%23050505'/><g fill='%23F5F2EB'><path d='M92 162c12-8 32-12 48-6 10 4 18 14 28 16 12 2 22-10 34-8 8 2 14 12 10 20-6 10-20 12-26 22-4 8 0 18-6 24-8 6-20 4-26 12-4 6-2 16-8 20-8 4-18-4-24-12-8-10-8-24-18-32-8-6-20-4-26-12-6-10 6-26 18-44z'/><path d='M165 130c14-10 36-12 48 0 8 8 4 24-6 32-10 8-26 6-36-4-8-8-12-20-6-28z'/><path d='M154 252c14-2 30 6 38 18 8 12 4 28-4 40-8 14-14 28-20 42-4 8-12 14-18 10-6-4-4-16-6-24-2-14-8-26-10-40-2-18 6-44 20-46z'/><path d='M242 152c14-10 34-16 50-8 10 4 16 16 28 16 14 0 26-12 42-12 22 0 44 10 62 22 12 8 22 22 16 36-4 10-18 14-24 24-6 12 2 28-8 36-10 8-26 2-36 10-8 6-8 20-18 22-10 2-18-10-28-14-12-4-24 4-34-2-10-6-12-20-22-26-12-6-28-4-34-16-6-10 2-24 0-36-2-14-10-32 16-52z'/><path d='M238 226c16-6 36-2 48 10 10 10 18 24 14 38-4 16-14 30-20 46-4 12-14 22-24 18-10-4-12-18-16-28-6-14-18-24-20-38-2-18 4-40 18-46z'/><path d='M364 286c14-4 32 2 40 14 6 10 4 26-6 32-12 6-28 2-36-8-6-10-8-34 2-38z'/></g><path d='M84 264 Q 252 178 424 168' fill='none' stroke='%23050505' stroke-width='16' stroke-linecap='round'/><path d='M84 264 Q 252 178 424 168' fill='none' stroke='%23F5F2EB' stroke-width='8' stroke-dasharray='14 14' stroke-linecap='round'/><circle cx='74' cy='269' r='11' fill='%23F5F2EB'/><path d='M452 142 l-24 6 l-22-18 l-8 4 l12 20 l-14 6 l-8-6 l-6 3 l6 12 l-4 12 l6 2 l8-8 l14-4 l-2 23 l8-2 l10-26 l20-8 c6-3 8-8 6-12 c-2-3-7-2-12 0 z' fill='%23F5F2EB'/><text x='256' y='392' font-family='Inter, Arial Black, sans-serif' font-weight='900' font-size='84' fill='%23F5F2EB' text-anchor='middle' letter-spacing='3'>NOMAD</text></svg>">
@@ -109,7 +107,7 @@
 
         /* Subtle Technical Grid Background */
         .bg-tech-grid {
-            background-size: 32px 32px;
+            background-size: 28px 28px;
             background-image: 
                 linear-gradient(to right, rgba(148, 163, 184, 0.04) 1px, transparent 1px),
                 linear-gradient(to bottom, rgba(148, 163, 184, 0.04) 1px, transparent 1px);
@@ -118,6 +116,15 @@
             background-image: 
                 linear-gradient(to right, rgba(15, 23, 42, 0.04) 1px, transparent 1px),
                 linear-gradient(to bottom, rgba(15, 23, 42, 0.04) 1px, transparent 1px);
+        }
+
+        /* Hide scrollbars on horizontal chip strips */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
         }
     </style>
 </head>
@@ -159,93 +166,124 @@
         </symbol>
     </svg>
 
-    <!-- MAIN APP CONTAINER -->
-    <div class="flex flex-col h-screen w-screen overflow-hidden">
+    <!-- MAIN APP CONTAINER (h-[100dvh] per adattarsi perfettamente ai browser mobile) -->
+    <div class="flex flex-col h-[100dvh] w-screen overflow-hidden">
 
-        <!-- TOP HEADER -->
-        <header class="h-auto min-h-[72px] shrink-0 border-b border-stone-200/80 dark:border-stone-800/80 bg-white/80 dark:bg-[#12151A]/90 backdrop-blur-md z-30 px-4 lg:px-6 py-2.5 flex flex-wrap items-center justify-between gap-4">
+        <!-- TOP HEADER (Ottimizzato Mobile Portrait & Desktop senza sovrapposizioni) -->
+        <header class="shrink-0 border-b border-stone-200/80 dark:border-stone-800/80 bg-white/90 dark:bg-[#12151A]/95 backdrop-blur-md z-30 px-3 sm:px-5 lg:px-6 py-2 sm:py-2.5 flex flex-col gap-2">
             
-            <!-- Brand & Global Progress Ring -->
-            <div class="flex items-center gap-5">
-                <div class="flex items-center gap-3.5">
-                    <!-- LOGO UFFICIALE NOMAD (Web & App Icon) -->
-                    <div class="w-11 h-11 rounded-[12px] overflow-hidden shadow-md border border-stone-800/80 dark:border-stone-700/80 shrink-0 bg-[#050505] flex items-center justify-center group cursor-pointer" onclick="zoomToContinent('ALL')" title="NOMAD // Torna alla Vista Globale">
-                        <svg class="w-full h-full group-hover:scale-105 transition-transform duration-300">
-                            <use href="#nomad-official-logo"></use>
-                        </svg>
-                    </div>
-                    <div>
-                        <div class="flex items-center gap-2">
-                            <h1 class="font-mono font-bold text-sm sm:text-base tracking-tight">NOMAD <span class="text-stone-400 font-normal">//</span> ATLAS</h1>
+            <!-- Riga Principale: Brand + Controlli Rapidi -->
+            <div class="flex items-center justify-between gap-2 w-full">
+                
+                <!-- Brand & Global Stats Desktop -->
+                <div class="flex items-center gap-3 sm:gap-5 min-w-0">
+                    <div class="flex items-center gap-2.5 sm:gap-3.5 min-w-0">
+                        <!-- LOGO UFFICIALE NOMAD -->
+                        <div class="w-9 h-9 sm:w-11 sm:h-11 rounded-[10px] sm:rounded-[12px] overflow-hidden shadow-md border border-stone-800/80 dark:border-stone-700/80 shrink-0 bg-[#050505] flex items-center justify-center group cursor-pointer" onclick="zoomToContinent('ALL')" title="NOMAD // Torna alla Vista Globale">
+                            <svg class="w-full h-full group-hover:scale-105 transition-transform duration-300">
+                                <use href="#nomad-official-logo"></use>
+                            </svg>
                         </div>
-                        <p class="text-[11px] text-stone-500 dark:text-stone-400 font-mono" id="travelerRank">RANK: PRONTO ALLA PARTENZA</p>
+                        <div class="min-w-0">
+                            <h1 class="font-mono font-bold text-xs sm:text-base tracking-tight truncate leading-tight">NOMAD <span class="text-stone-400 font-normal">//</span> ATLAS</h1>
+                            <p class="text-[9px] sm:text-[11px] text-stone-500 dark:text-stone-400 font-mono truncate mt-0.5" id="travelerRank">RANK: PRONTO ALLA PARTENZA</p>
+                        </div>
+                    </div>
+
+                    <div class="h-8 w-[1px] bg-stone-200 dark:bg-stone-800 hidden md:block shrink-0"></div>
+
+                    <!-- Ring & Global Stats (Visibile su Tablet/Desktop nella riga principale) -->
+                    <div class="hidden md:flex items-center gap-3 shrink-0">
+                        <div class="relative w-11 h-11 flex items-center justify-center shrink-0">
+                            <svg class="w-11 h-11 -rotate-90 transform" viewBox="0 0 44 44">
+                                <circle cx="22" cy="22" r="18" fill="none" class="stroke-stone-200 dark:stroke-stone-800" stroke-width="4"></circle>
+                                <circle id="worldProgressCircle" cx="22" cy="22" r="18" fill="none" stroke="#E04F33" stroke-width="4" stroke-linecap="round" stroke-dasharray="113.097" stroke-dashoffset="113.097" class="transition-all duration-700 ease-out"></circle>
+                            </svg>
+                            <span id="worldPercentText" class="absolute font-mono text-[10px] font-bold tracking-tighter">0%</span>
+                        </div>
+                        <div>
+                            <div class="flex items-baseline gap-1">
+                                <span id="visitedCountText" class="font-mono text-base font-bold leading-none">0</span>
+                                <span class="font-mono text-[11px] text-stone-400">/ 195 PAESI</span>
+                            </div>
+                            <div class="flex items-center gap-2 mt-1 text-[10px] font-mono text-stone-500 dark:text-stone-400">
+                                <span><strong id="continentsCountText" class="text-stone-800 dark:text-stone-200">0</strong>/5 CONT.</span>
+                                <span>•</span>
+                                <span class="text-amber-500"><strong id="wishlistCountText">0</strong> ★ WISH</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="h-8 w-[1px] bg-stone-200 dark:bg-stone-800 hidden sm:block"></div>
+                <!-- Continent Interactive Bars (Solo Desktop XL) -->
+                <div class="hidden xl:flex items-center gap-2 flex-1 max-w-2xl mx-4" id="continentBarsContainer"></div>
 
-                <!-- Ring & Global Stats -->
-                <div class="flex items-center gap-3.5">
-                    <div class="relative w-12 h-12 flex items-center justify-center">
-                        <svg class="w-12 h-12 -rotate-90 transform" viewBox="0 0 44 44">
-                            <circle cx="22" cy="22" r="18" fill="none" class="stroke-stone-200 dark:stroke-stone-800" stroke-width="4"></circle>
-                            <circle id="worldProgressCircle" cx="22" cy="22" r="18" fill="none" stroke="#E04F33" stroke-width="4" stroke-linecap="round" stroke-dasharray="113.097" stroke-dashoffset="113.097" class="transition-all duration-700 ease-out"></circle>
-                        </svg>
-                        <span id="worldPercentText" class="absolute font-mono text-[11px] font-bold tracking-tighter">0%</span>
-                    </div>
-                    <div>
-                        <div class="flex items-baseline gap-1">
-                            <span id="visitedCountText" class="font-mono text-lg font-bold leading-none">0</span>
-                            <span class="font-mono text-xs text-stone-400">/ 195 PAESI</span>
-                        </div>
-                        <div class="flex items-center gap-2 mt-1 text-[11px] font-mono text-stone-500 dark:text-stone-400">
-                            <span><strong id="continentsCountText" class="text-stone-800 dark:text-stone-200">0</strong>/5 CONT.</span>
-                            <span>•</span>
-                            <span class="text-amber-500"><strong id="wishlistCountText">0</strong> ★ WISH</span>
-                        </div>
-                    </div>
+                <!-- Action Controls (Compatti su Mobile, Estesi su Desktop) -->
+                <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
+                    <button id="mobileSidebarToggle" class="lg:hidden flex items-center gap-1.5 px-2.5 py-2 rounded-xl border border-stone-200 dark:border-stone-800 bg-stone-100/80 dark:bg-stone-800/60 text-stone-800 dark:text-stone-200 font-mono text-[11px] font-bold active:scale-95 transition" title="Lista Paesi">
+                        <i data-lucide="list-filter" class="w-3.5 h-3.5 text-[#E04F33]"></i>
+                        <span>PAESI</span>
+                    </button>
+
+                    <button id="openPassportBtn" class="flex items-center gap-1.5 px-2.5 sm:px-3.5 py-2 rounded-xl bg-stone-900 hover:bg-stone-800 dark:bg-stone-100 dark:hover:bg-white text-white dark:text-stone-950 text-[11px] sm:text-xs font-mono font-bold tracking-tight active:scale-95 transition shadow-sm">
+                        <i data-lucide="book-open-check" class="w-3.5 h-3.5 shrink-0"></i>
+                        <span class="hidden sm:inline">PASSAPORTO</span>
+                        <span id="passportBadgeCount" class="px-1.5 py-0.2 rounded-full bg-white/20 dark:bg-stone-900/15 text-[10px]">0</span>
+                    </button>
+
+                    <button id="openDataModalBtn" class="p-2 rounded-xl border border-stone-200 dark:border-stone-800 hover:bg-stone-100 dark:hover:bg-stone-800/60 text-stone-600 dark:text-stone-400 active:scale-95 transition" title="Gestione Dati, Logo App & Backup JSON">
+                        <i data-lucide="sliders-horizontal" class="w-4 h-4"></i>
+                    </button>
+
+                    <button id="themeToggleBtn" class="p-2 rounded-xl border border-stone-200 dark:border-stone-800 hover:bg-stone-100 dark:hover:bg-stone-800/60 text-stone-600 dark:text-stone-400 active:scale-95 transition" title="Cambia Tema Chiaro/Scuro">
+                        <i data-lucide="sun" class="w-4 h-4 hidden dark:block text-amber-400"></i>
+                        <i data-lucide="moon" class="w-4 h-4 block dark:hidden text-stone-700"></i>
+                    </button>
                 </div>
             </div>
 
-            <!-- Continent Interactive Bars -->
-            <div class="hidden xl:flex items-center gap-2.5 flex-1 max-w-2xl mx-4" id="continentBarsContainer"></div>
-
-            <!-- Action Controls -->
-            <div class="flex items-center gap-2">
-                <button id="mobileSidebarToggle" class="lg:hidden p-2 rounded-xl border border-stone-200 dark:border-stone-800 hover:bg-stone-100 dark:hover:bg-stone-800/60 text-stone-700 dark:text-stone-300 transition" title="Lista Paesi">
-                    <i data-lucide="list-filter" class="w-4 h-4"></i>
-                </button>
-
-                <button id="openPassportBtn" class="flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-stone-900 hover:bg-stone-800 dark:bg-stone-100 dark:hover:bg-white text-white dark:text-stone-950 text-xs font-mono font-bold tracking-tight transition shadow-sm">
-                    <i data-lucide="book-open-check" class="w-3.5 h-3.5"></i>
-                    <span>PASSAPORTO</span>
-                    <span id="passportBadgeCount" class="px-1.5 py-0.2 rounded-full bg-white/20 dark:bg-stone-900/15 text-[10px]">0</span>
-                </button>
-
-                <button id="openDataModalBtn" class="p-2 rounded-xl border border-stone-200 dark:border-stone-800 hover:bg-stone-100 dark:hover:bg-stone-800/60 text-stone-600 dark:text-stone-400 transition" title="Gestione Dati, Logo App & Backup JSON">
-                    <i data-lucide="sliders-horizontal" class="w-4 h-4"></i>
-                </button>
-
-                <button id="themeToggleBtn" class="p-2 rounded-xl border border-stone-200 dark:border-stone-800 hover:bg-stone-100 dark:hover:bg-stone-800/60 text-stone-600 dark:text-stone-400 transition" title="Cambia Tema Chiaro/Scuro">
-                    <i data-lucide="sun" class="w-4 h-4 hidden dark:block text-amber-400"></i>
-                    <i data-lucide="moon" class="w-4 h-4 block dark:hidden text-stone-700"></i>
-                </button>
+            <!-- Seconda Riga Mobile: Statistiche Globali Compatte (Senza mai andare a capo male) -->
+            <div class="md:hidden flex items-center justify-between px-2.5 py-1.5 rounded-xl bg-stone-100/90 dark:bg-stone-900/80 border border-stone-200/60 dark:border-stone-800/70 text-[11px] font-mono">
+                <div class="flex items-center gap-2">
+                    <span class="inline-block w-2 h-2 rounded-full bg-[#E04F33]"></span>
+                    <span class="font-bold text-stone-900 dark:text-white"><span id="mobileVisitedCount">0</span><span class="text-stone-400 font-normal">/195</span></span>
+                    <span id="mobileWorldPct" class="px-1.5 py-0.2 rounded bg-[#E04F33]/15 text-[#E04F33] font-bold text-[10px]">0%</span>
+                </div>
+                <div class="flex items-center gap-2.5 text-[10px] text-stone-500 dark:text-stone-400">
+                    <span><strong id="mobileContCount" class="text-stone-800 dark:text-stone-200">0</strong>/5 CONT.</span>
+                    <span>•</span>
+                    <span class="text-amber-500 font-bold"><strong id="mobileWishCount">0</strong> ★ WISH</span>
+                </div>
             </div>
         </header>
 
-        <!-- Secondary Mobile Continent Bar -->
-        <div class="xl:hidden flex items-center gap-2 overflow-x-auto px-4 py-2 bg-white/60 dark:bg-[#12151A]/60 border-b border-stone-200/60 dark:border-stone-800/60 shrink-0" id="mobileContinentBarsContainer"></div>
+        <!-- Barra Orizzontale Continenti (Mobile & Tablet) -->
+        <div class="xl:hidden flex items-center gap-1.5 overflow-x-auto no-scrollbar px-3 py-1.5 bg-white/75 dark:bg-[#12151A]/80 border-b border-stone-200/60 dark:border-stone-800/60 shrink-0" id="mobileContinentBarsContainer"></div>
 
         <!-- MAIN WORKSPACE -->
         <div class="flex-1 flex overflow-hidden relative">
 
-            <!-- SIDEBAR -->
-            <aside id="sidebarPanel" class="w-80 sm:w-96 shrink-0 border-r border-stone-200/80 dark:border-stone-800/80 bg-white/95 dark:bg-[#12151A]/95 backdrop-blur-md flex flex-col z-20 absolute lg:relative inset-y-0 left-0 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out shadow-2xl lg:shadow-none">
+            <!-- BACKDROP SCURO MOBILE PER LA SIDEBAR -->
+            <div id="sidebarBackdrop" class="fixed inset-0 bg-black/50 backdrop-blur-xs z-20 hidden lg:hidden transition-opacity"></div>
+
+            <!-- SIDEBAR (Drawer scorrevole su Mobile con pulsante di chiusura dedicato) -->
+            <aside id="sidebarPanel" class="w-[88vw] max-w-[360px] sm:w-96 shrink-0 border-r border-stone-200/80 dark:border-stone-800/80 bg-white dark:bg-[#12151A] flex flex-col z-30 lg:z-20 absolute lg:relative inset-y-0 left-0 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out shadow-2xl lg:shadow-none">
                 
-                <div class="p-3.5 border-b border-stone-200/80 dark:border-stone-800/80 space-y-3">
+                <!-- Intestazione Mobile del Drawer Paesi -->
+                <div class="lg:hidden px-4 py-3 border-b border-stone-200/80 dark:border-stone-800/80 flex items-center justify-between bg-stone-50/80 dark:bg-stone-900/50">
+                    <div class="flex items-center gap-2 font-mono text-xs font-bold">
+                        <i data-lucide="globe" class="w-4 h-4 text-[#E04F33]"></i>
+                        <span>ELENCO PAESI & FILTRI</span>
+                    </div>
+                    <button id="closeSidebarMobileBtn" class="p-1.5 rounded-xl bg-stone-200/70 dark:bg-stone-800 text-stone-600 dark:text-stone-300">
+                        <i data-lucide="x" class="w-4 h-4"></i>
+                    </button>
+                </div>
+
+                <div class="p-3 sm:p-3.5 border-b border-stone-200/80 dark:border-stone-800/80 space-y-2.5">
                     <div class="relative">
                         <i data-lucide="search" class="w-4 h-4 text-stone-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
-                        <input id="countrySearchInput" type="text" placeholder="Cerca paese in italiano o codice..." 
+                        <input id="countrySearchInput" type="text" placeholder="Cerca paese o città..." 
                             class="w-full pl-9 pr-8 py-2 rounded-xl bg-stone-100 dark:bg-stone-900/90 border border-stone-200/70 dark:border-stone-800 text-xs focus:outline-none focus:ring-2 focus:ring-[#E04F33]/50 transition">
                         <button id="clearSearchBtn" class="hidden absolute right-2.5 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-600 dark:hover:text-stone-200">
                             <i data-lucide="x" class="w-3.5 h-3.5"></i>
@@ -306,99 +344,91 @@
                     </div>
                 </div>
 
-                <div class="absolute top-4 left-4 z-10 flex flex-wrap items-center gap-2 pointer-events-auto">
-                    <div class="px-3 py-1.5 rounded-xl bg-white/85 dark:bg-[#151921]/85 backdrop-blur-md border border-stone-200/80 dark:border-stone-800/80 shadow-sm flex items-center gap-2.5 text-xs font-mono">
-                        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                        <span id="activeRegionLabel" class="font-bold">VISTA: GLOBALE</span>
-                        <button id="resetZoomBtn" class="text-[11px] text-stone-400 hover:text-stone-900 dark:hover:text-white underline ml-1 hidden">Reset</button>
+                <!-- Pillole informative in alto sulla mappa (Responsive, non si sovrappongono mai) -->
+                <div class="absolute top-2.5 left-2.5 right-2.5 sm:right-auto z-10 flex items-center justify-between sm:justify-start gap-2 pointer-events-none">
+                    <div class="pointer-events-auto px-2.5 py-1.5 rounded-xl bg-white/90 dark:bg-[#151921]/90 backdrop-blur-md border border-stone-200/80 dark:border-stone-800/80 shadow-sm flex items-center gap-2 text-[11px] font-mono">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shrink-0"></span>
+                        <span id="activeRegionLabel" class="font-bold truncate">VISTA: GLOBALE</span>
+                        <button id="resetZoomBtn" class="text-[10px] text-[#E04F33] font-bold underline ml-1 hidden">Reset</button>
                     </div>
 
-                    <button id="toggleMicroPinsBtn" class="px-3 py-1.5 rounded-xl bg-white/85 dark:bg-[#151921]/85 backdrop-blur-md border border-stone-200/80 dark:border-stone-800/80 shadow-sm flex items-center gap-1.5 text-xs font-mono hover:border-stone-400 dark:hover:border-stone-600 transition">
+                    <button id="toggleMicroPinsBtn" class="pointer-events-auto px-2.5 py-1.5 rounded-xl bg-white/90 dark:bg-[#151921]/90 backdrop-blur-md border border-stone-200/80 dark:border-stone-800/80 shadow-sm flex items-center gap-1.5 text-[11px] font-mono hover:border-stone-400 dark:hover:border-stone-600 active:scale-95 transition shrink-0">
                         <i data-lucide="locate-fixed" class="w-3.5 h-3.5 text-[#E04F33]"></i>
-                        <span>Pin Microstati: <strong id="microPinStateText">ON</strong></span>
-                    </button>
-                </div>
-
-                <div class="absolute top-4 right-4 z-10 flex flex-col gap-1.5 bg-white/85 dark:bg-[#151921]/85 backdrop-blur-md p-1.5 rounded-2xl border border-stone-200/80 dark:border-stone-800/80 shadow-sm">
-                    <button id="zoomInBtn" class="p-2 rounded-xl hover:bg-stone-200/60 dark:hover:bg-stone-800 text-stone-700 dark:text-stone-300 transition" title="Zoom In">
-                        <i data-lucide="plus" class="w-4 h-4"></i>
-                    </button>
-                    <button id="zoomOutBtn" class="p-2 rounded-xl hover:bg-stone-200/60 dark:hover:bg-stone-800 text-stone-700 dark:text-stone-300 transition" title="Zoom Out">
-                        <i data-lucide="minus" class="w-4 h-4"></i>
-                    </button>
-                    <div class="h-[1px] bg-stone-200 dark:bg-stone-800 my-0.5"></div>
-                    <button id="zoomResetIconBtn" class="p-2 rounded-xl hover:bg-stone-200/60 dark:hover:bg-stone-800 text-stone-700 dark:text-stone-300 transition" title="Centra Mappa">
-                        <i data-lucide="maximize-2" class="w-4 h-4"></i>
+                        <span>Microstati: <strong id="microPinStateText">ON</strong></span>
                     </button>
                 </div>
 
                 <div id="mapTooltip" class="pointer-events-none fixed z-50 hidden px-3 py-2 rounded-xl bg-stone-900/95 dark:bg-stone-950/95 text-white border border-stone-700/70 shadow-xl backdrop-blur-md transition-opacity duration-75"></div>
 
-                <svg id="worldMapSvg" class="w-full h-full cursor-grab active:cursor-grabbing"></svg>
+                <svg id="worldMapSvg" class="w-full h-full cursor-grab active:cursor-grabbing touch-none"></svg>
 
-                <div class="absolute bottom-4 left-4 z-10 flex flex-col gap-2.5 max-w-[calc(100vw-2rem)] sm:max-w-md pointer-events-auto">
-                    <div class="px-3 py-2 rounded-2xl bg-white/90 dark:bg-[#151921]/90 backdrop-blur-md border border-stone-200/90 dark:border-stone-800/90 shadow-lg flex items-center gap-2 text-xs font-mono">
-                        <i data-lucide="file-text" class="w-3.5 h-3.5 text-[#E04F33]"></i>
-                        <span>Clicca su un paese per aprire la Scheda</span>
+                <!-- Hint in basso a sinistra (Nascosto quando la scheda paese è aperta su mobile) -->
+                <div id="mapBottomHint" class="absolute bottom-3 left-3 right-3 sm:right-auto z-10 flex justify-center sm:justify-start pointer-events-none transition-opacity duration-200">
+                    <div class="px-3 py-1.5 rounded-xl bg-white/85 dark:bg-[#151921]/85 backdrop-blur-md border border-stone-200/80 dark:border-stone-800/80 shadow-md flex items-center gap-2 text-[11px] font-mono text-stone-600 dark:text-stone-300">
+                        <i data-lucide="hand" class="w-3.5 h-3.5 text-[#E04F33] shrink-0"></i>
+                        <span class="truncate">Tocca un paese sulla mappa per aprire la Scheda</span>
                     </div>
                 </div>
 
-                <!-- COUNTRY JOURNAL CARD -->
-                <div id="countryDetailCard" class="hidden absolute bottom-4 right-4 z-20 w-[calc(100vw-2rem)] sm:w-96 rounded-2xl bg-white/95 dark:bg-[#151921]/95 backdrop-blur-xl border border-stone-200 dark:border-stone-800 shadow-2xl overflow-hidden transition-all duration-300">
-                    <div id="cardTopAccentBar" class="h-2 w-full bg-[#E04F33]"></div>
+                <!-- COUNTRY JOURNAL CARD (Bottom-Sheet ergonomica su Mobile, Card flottante su Desktop) -->
+                <div id="countryDetailCard" class="hidden absolute bottom-0 inset-x-0 sm:bottom-4 sm:right-4 sm:left-auto z-30 sm:w-96 rounded-t-3xl sm:rounded-2xl bg-white/98 dark:bg-[#151921]/98 backdrop-blur-xl border-t sm:border border-stone-200 dark:border-stone-800 shadow-[0_-10px_40px_rgba(0,0,0,0.25)] sm:shadow-2xl overflow-hidden transition-all duration-300 max-h-[80dvh] flex flex-col">
+                    <div id="cardTopAccentBar" class="h-1.5 sm:h-2 w-full bg-[#E04F33] shrink-0"></div>
                     
-                    <div class="p-4 sm:p-5 space-y-4">
+                    <!-- Maniglia decorativa per mobile bottom-sheet -->
+                    <div class="sm:hidden w-10 h-1 rounded-full bg-stone-300 dark:bg-stone-700 mx-auto mt-2 shrink-0"></div>
+
+                    <div class="p-4 sm:p-5 space-y-3.5 overflow-y-auto">
                         <div class="flex items-start justify-between gap-2">
-                            <div class="flex items-center gap-3">
-                                <span id="cardFlagEmoji" class="text-3xl select-none">🇮🇹</span>
-                                <div>
+                            <div class="flex items-center gap-3 min-w-0">
+                                <span id="cardFlagEmoji" class="text-3xl select-none shrink-0">🇮🇹</span>
+                                <div class="min-w-0">
                                     <div class="flex items-center gap-2">
                                         <span id="cardContinentBadge" class="text-[10px] font-mono uppercase font-bold px-2 py-0.5 rounded-md bg-stone-100 dark:bg-stone-800">EUROPA</span>
                                         <span id="cardIsoCode" class="text-[11px] font-mono text-stone-400">ITA</span>
                                     </div>
-                                    <h3 id="cardCountryName" class="text-lg font-bold tracking-tight leading-snug mt-0.5">Italia</h3>
+                                    <h3 id="cardCountryName" class="text-base sm:text-lg font-bold tracking-tight leading-snug mt-0.5 truncate">Italia</h3>
                                 </div>
                             </div>
-                            <button id="closeCardBtn" class="p-1.5 rounded-xl text-stone-400 hover:text-stone-700 dark:hover:text-stone-200 hover:bg-stone-100 dark:hover:bg-stone-800 transition">
+                            <button id="closeCardBtn" class="p-2 rounded-xl text-stone-400 hover:text-stone-700 dark:hover:text-stone-200 bg-stone-100/80 dark:bg-stone-800/80 transition shrink-0">
                                 <i data-lucide="x" class="w-4 h-4"></i>
                             </button>
                         </div>
 
                         <div class="grid grid-cols-3 gap-2 font-mono text-xs">
-                            <button id="cardBtnVisited" class="py-2 px-2.5 rounded-xl border border-stone-200 dark:border-stone-800 flex items-center justify-center gap-1.5 font-bold transition">
+                            <button id="cardBtnVisited" class="py-2.5 px-2 rounded-xl border border-stone-200 dark:border-stone-800 flex items-center justify-center gap-1 font-bold active:scale-95 transition">
                                 <span>✓ Been</span>
                             </button>
-                            <button id="cardBtnWishlist" class="py-2 px-2.5 rounded-xl border border-stone-200 dark:border-stone-800 flex items-center justify-center gap-1.5 font-bold transition">
-                                <span>★ Wishlist</span>
+                            <button id="cardBtnWishlist" class="py-2.5 px-2 rounded-xl border border-stone-200 dark:border-stone-800 flex items-center justify-center gap-1 font-bold active:scale-95 transition">
+                                <span>★ Wish</span>
                             </button>
-                            <button id="cardBtnClear" class="py-2 px-2.5 rounded-xl border border-stone-200 dark:border-stone-800 flex items-center justify-center gap-1.5 text-stone-500 hover:text-stone-800 dark:hover:text-stone-200 transition">
+                            <button id="cardBtnClear" class="py-2.5 px-2 rounded-xl border border-stone-200 dark:border-stone-800 flex items-center justify-center gap-1 text-stone-500 hover:text-stone-800 dark:hover:text-stone-200 active:scale-95 transition">
                                 <span>Mancante</span>
                             </button>
                         </div>
 
-                        <div class="space-y-3 pt-1 border-t border-stone-200/70 dark:border-stone-800/70">
-                            <div class="grid grid-cols-3 gap-2.5">
+                        <div class="space-y-2.5 pt-2 border-t border-stone-200/70 dark:border-stone-800/70">
+                            <div class="grid grid-cols-3 gap-2">
                                 <div class="col-span-1">
-                                    <label class="block text-[10px] font-mono uppercase text-stone-400 mb-1">Anno Visita</label>
-                                    <input id="cardInputYear" type="text" maxlength="9" placeholder="es. 2024" 
-                                        class="w-full px-2.5 py-1.5 rounded-xl bg-stone-100 dark:bg-stone-900 border border-stone-200/80 dark:border-stone-800 text-xs font-mono focus:outline-none focus:ring-2 focus:ring-[#E04F33]/50">
+                                    <label class="block text-[10px] font-mono uppercase text-stone-400 mb-1">Anno</label>
+                                    <input id="cardInputYear" type="text" inputmode="numeric" maxlength="9" placeholder="2025" 
+                                        class="w-full px-2.5 py-2 rounded-xl bg-stone-100 dark:bg-stone-900 border border-stone-200/80 dark:border-stone-800 text-xs font-mono focus:outline-none focus:ring-2 focus:ring-[#E04F33]/50">
                                 </div>
                                 <div class="col-span-2">
-                                    <label class="block text-[10px] font-mono uppercase text-stone-400 mb-1">Città / Luoghi Toccati</label>
+                                    <label class="block text-[10px] font-mono uppercase text-stone-400 mb-1">Città / Luoghi</label>
                                     <input id="cardInputCities" type="text" placeholder="Roma, Firenze, Aosta..." 
-                                        class="w-full px-2.5 py-1.5 rounded-xl bg-stone-100 dark:bg-stone-900 border border-stone-200/80 dark:border-stone-800 text-xs font-mono focus:outline-none focus:ring-2 focus:ring-[#E04F33]/50">
+                                        class="w-full px-2.5 py-2 rounded-xl bg-stone-100 dark:bg-stone-900 border border-stone-200/80 dark:border-stone-800 text-xs font-mono focus:outline-none focus:ring-2 focus:ring-[#E04F33]/50">
                                 </div>
                             </div>
 
                             <div>
                                 <label class="block text-[10px] font-mono uppercase text-stone-400 mb-1">Diario di Bordo / Ricordi</label>
-                                <textarea id="cardInputNotes" rows="2" placeholder="Annota un ricordo speciale, piatto tipico o itinerario..." 
+                                <textarea id="cardInputNotes" rows="2" placeholder="Annota un ricordo speciale o itinerario..." 
                                     class="w-full px-3 py-2 rounded-xl bg-stone-100 dark:bg-stone-900 border border-stone-200/80 dark:border-stone-800 text-xs focus:outline-none focus:ring-2 focus:ring-[#E04F33]/50 resize-none"></textarea>
                             </div>
 
-                            <div class="flex items-center justify-between pt-1">
+                            <div class="flex items-center justify-between pt-1 pb-1">
                                 <span id="cardSaveFeedback" class="text-[11px] font-mono text-emerald-500 opacity-0 transition-opacity">✓ Salvato nel Passaporto</span>
-                                <button id="cardSaveDetailsBtn" class="px-4 py-1.5 rounded-xl bg-stone-900 dark:bg-stone-100 text-white dark:text-stone-900 font-mono text-xs font-bold hover:opacity-90 transition">
+                                <button id="cardSaveDetailsBtn" class="px-4 py-2 rounded-xl bg-stone-900 dark:bg-stone-100 text-white dark:text-stone-900 font-mono text-xs font-bold active:scale-95 transition">
                                     Salva Scheda
                                 </button>
                             </div>
@@ -410,46 +440,46 @@
         </div>
     </div>
 
-    <!-- MODAL 1: PASSAPORTO -->
-    <div id="passportModal" class="fixed inset-0 z-50 hidden bg-black/65 backdrop-blur-sm flex items-center justify-center p-4">
-        <div class="bg-[#F8F6F0] dark:bg-[#13161C] border border-stone-300 dark:border-stone-800 rounded-3xl max-w-4xl w-full max-h-[88vh] flex flex-col shadow-2xl overflow-hidden">
+    <!-- MODAL 1: PASSAPORTO (Ottimizzata Mobile) -->
+    <div id="passportModal" class="fixed inset-0 z-50 hidden bg-black/70 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4">
+        <div class="bg-[#F8F6F0] dark:bg-[#13161C] border-t sm:border border-stone-300 dark:border-stone-800 rounded-t-3xl sm:rounded-3xl max-w-4xl w-full h-[88dvh] sm:max-h-[88vh] flex flex-col shadow-2xl overflow-hidden">
             
-            <div class="px-6 py-4 border-b border-stone-200 dark:border-stone-800 flex items-center justify-between bg-white/60 dark:bg-stone-900/50">
-                <div class="flex items-center gap-3.5">
-                    <div class="w-11 h-11 rounded-xl overflow-hidden border border-stone-700/70 shadow-sm shrink-0">
+            <div class="px-4 sm:px-6 py-3.5 sm:py-4 border-b border-stone-200 dark:border-stone-800 flex items-center justify-between bg-white/60 dark:bg-stone-900/50 shrink-0">
+                <div class="flex items-center gap-3 min-w-0">
+                    <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-xl overflow-hidden border border-stone-700/70 shadow-sm shrink-0">
                         <svg class="w-full h-full">
                             <use href="#nomad-official-logo"></use>
                         </svg>
                     </div>
-                    <div>
-                        <h2 class="font-mono font-bold text-base tracking-tight">PASSAPORTO DIPLOMATICO // NOMAD</h2>
-                        <p class="text-xs font-mono text-stone-500 dark:text-stone-400">Timbri ufficiali dei paesi esplorati e annotazioni di viaggio</p>
+                    <div class="min-w-0">
+                        <h2 class="font-mono font-bold text-xs sm:text-base tracking-tight truncate">PASSAPORTO DIPLOMATICO // NOMAD</h2>
+                        <p class="text-[11px] font-mono text-stone-500 dark:text-stone-400 truncate">Timbri ufficiali dei paesi esplorati</p>
                     </div>
                 </div>
-                <button id="closePassportModalBtn" class="p-2 rounded-xl hover:bg-stone-200/70 dark:hover:bg-stone-800 text-stone-500 transition">
+                <button id="closePassportModalBtn" class="p-2 rounded-xl hover:bg-stone-200/70 dark:hover:bg-stone-800 text-stone-500 shrink-0">
                     <i data-lucide="x" class="w-5 h-5"></i>
                 </button>
             </div>
 
-            <div class="px-6 py-3 border-b border-stone-200/70 dark:border-stone-800/70 flex flex-wrap items-center justify-between gap-2 text-xs font-mono">
-                <div class="flex items-center gap-1.5" id="passportTabBtns">
-                    <button data-pass-tab="visited" class="pass-tab-btn px-3 py-1.5 rounded-xl bg-stone-900 text-white dark:bg-stone-100 dark:text-stone-900 font-bold">Timbri Visitati ✓</button>
-                    <button data-pass-tab="wishlist" class="pass-tab-btn px-3 py-1.5 rounded-xl text-stone-500 hover:bg-stone-200/60 dark:hover:bg-stone-800">Visti Futuri ★ (Wishlist)</button>
+            <div class="px-4 sm:px-6 py-2.5 border-b border-stone-200/70 dark:border-stone-800/70 flex flex-wrap items-center justify-between gap-2 text-xs font-mono shrink-0">
+                <div class="flex items-center gap-1.5 w-full sm:w-auto" id="passportTabBtns">
+                    <button data-pass-tab="visited" class="pass-tab-btn flex-1 sm:flex-initial px-3 py-1.5 rounded-xl bg-stone-900 text-white dark:bg-stone-100 dark:text-stone-900 font-bold text-[11px] sm:text-xs">Timbri Visitati ✓</button>
+                    <button data-pass-tab="wishlist" class="pass-tab-btn flex-1 sm:flex-initial px-3 py-1.5 rounded-xl text-stone-500 hover:bg-stone-200/60 dark:hover:bg-stone-800 text-[11px] sm:text-xs">Wishlist ★</button>
                 </div>
-                <span class="text-stone-400 text-[11px]">Clicca su un timbro per aprire la Scheda Paese sulla mappa</span>
+                <span class="hidden sm:inline text-stone-400 text-[11px]">Tocca un timbro per aprire la Scheda Paese</span>
             </div>
 
-            <div id="passportStampsGrid" class="flex-1 overflow-y-auto p-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4"></div>
+            <div id="passportStampsGrid" class="flex-1 overflow-y-auto p-4 sm:p-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3.5 sm:gap-4 content-start"></div>
         </div>
     </div>
 
     <!-- MODAL 2: DATA, LOGO APP & BACKUP -->
-    <div id="dataModal" class="fixed inset-0 z-50 hidden bg-black/65 backdrop-blur-sm flex items-center justify-center p-4">
-        <div class="bg-white dark:bg-[#151921] border border-stone-200 dark:border-stone-800 rounded-3xl max-w-lg w-full p-6 space-y-5 shadow-2xl">
+    <div id="dataModal" class="fixed inset-0 z-50 hidden bg-black/70 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4">
+        <div class="bg-white dark:bg-[#151921] border-t sm:border border-stone-200 dark:border-stone-800 rounded-t-3xl sm:rounded-3xl max-w-lg w-full p-5 sm:p-6 space-y-4 shadow-2xl max-h-[90dvh] overflow-y-auto">
             <div class="flex items-center justify-between">
                 <div class="flex items-center gap-2.5">
                     <i data-lucide="database" class="w-5 h-5 text-[#E04F33]"></i>
-                    <h3 class="font-mono font-bold text-base">IMPOSTAZIONI, APP ICON & BACKUP</h3>
+                    <h3 class="font-mono font-bold text-sm sm:text-base">IMPOSTAZIONI, APP ICON & BACKUP</h3>
                 </div>
                 <button id="closeDataModalBtn" class="p-1.5 rounded-xl hover:bg-stone-100 dark:hover:bg-stone-800 text-stone-400">
                     <i data-lucide="x" class="w-4 h-4"></i>
@@ -786,6 +816,8 @@
             COUNTRY_BY_NUM[c.num] = c;
         });
 
+        const STORAGE_KEY = 'nomad_atlas_records_v1';
+
         const state = {
             records: {},
             showMicroPins: true,
@@ -796,6 +828,29 @@
             selectedCountryId: null,
             passportTab: 'visited'
         };
+
+        // Caricamento e salvataggio automatico su LocalStorage (così su smartphone non perdi mai i paesi inseriti)
+        function loadSavedRecords() {
+            try {
+                const raw = localStorage.getItem(STORAGE_KEY);
+                if (raw) {
+                    const parsed = JSON.parse(raw);
+                    if (parsed && typeof parsed === 'object') {
+                        state.records = parsed;
+                    }
+                }
+            } catch (e) {
+                console.warn('Impossibile leggere localStorage:', e);
+            }
+        }
+
+        function persistRecords() {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(state.records));
+            } catch (e) {
+                console.warn('Impossibile salvare su localStorage:', e);
+            }
+        }
 
         function getContinentColor(continentName) {
             return CONTINENT_CONFIG[continentName]?.color || BEEN_CLASSIC_COLOR;
@@ -826,10 +881,19 @@
         let worldCopyWidth = 960;
         const HORIZONTAL_OFFSETS = [-1, 0, 1];
 
+        // Calcola una scala ideale sia per schermi orizzontali che per smartphone verticali
+        function computeOptimalMapScale(w, h) {
+            const isPortrait = h > w;
+            if (isPortrait) {
+                return Math.max(w / 4.1, h / 5.4);
+            }
+            return w / 5.7;
+        }
+
         async function initWorldMap() {
             const viewport = document.getElementById('mapViewport');
-            mapWidth = viewport.clientWidth || 960;
-            mapHeight = viewport.clientHeight || 560;
+            mapWidth = viewport.clientWidth || window.innerWidth;
+            mapHeight = viewport.clientHeight || (window.innerHeight - 130);
 
             svg = d3.select('#worldMapSvg')
                 .attr('viewBox', `0 0 ${mapWidth} ${mapHeight}`);
@@ -838,8 +902,10 @@
             gCountries = gMap.append('g').attr('class', 'countries-layer');
             gPins = gMap.append('g').attr('class', 'microstates-layer');
 
+            const initialScale = computeOptimalMapScale(mapWidth, mapHeight);
+
             projection = d3.geoNaturalEarth1()
-                .scale(mapWidth / 5.7)
+                .scale(initialScale)
                 .translate([mapWidth / 2, mapHeight / 1.92]);
 
             pathGenerator = d3.geoPath().projection(projection);
@@ -849,10 +915,10 @@
             worldCopyWidth = Math.abs(rightEdge - leftEdge);
 
             zoomBehavior = d3.zoom()
-                .scaleExtent([1, 14])
+                .scaleExtent([0.85, 16])
                 .translateExtent([
-                    [-worldCopyWidth, -mapHeight * 0.08],
-                    [mapWidth + worldCopyWidth, mapHeight * 1.08]
+                    [-worldCopyWidth, -mapHeight * 0.25],
+                    [mapWidth + worldCopyWidth, mapHeight * 1.25]
                 ])
                 .on('zoom', (event) => {
                     let { x, y, k } = event.transform;
@@ -907,12 +973,15 @@
                             return '0.65px';
                         })
                         .on('mousemove', (event, d) => {
-                            const c = matchFeatureToCountry(d);
-                            if (c) showMapTooltip(event, c);
+                            if (window.matchMedia('(pointer: fine)').matches) {
+                                const c = matchFeatureToCountry(d);
+                                if (c) showMapTooltip(event, c);
+                            }
                         })
                         .on('mouseleave', hideMapTooltip)
                         .on('click', (event, d) => {
                             event.stopPropagation();
+                            hideMapTooltip();
                             const c = matchFeatureToCountry(d);
                             if (c) handleCountryMapClick(c);
                         });
@@ -928,11 +997,43 @@
             } catch (err) {
                 console.error("Errore caricamento mappa:", err);
                 document.getElementById('mapLoader').innerHTML = `
-                    <p class="font-mono text-xs text-red-500">Impossibile caricare la geometria vettoriale. Controlla la connessione.</p>
+                    <p class="font-mono text-xs text-red-500 px-4 text-center">Impossibile caricare la geometria vettoriale. Controlla la connessione.</p>
                 `;
             }
 
             svg.on('click', () => closeCountryCard());
+
+            // Ricalcolo fluido su rotazione schermo smartphone o resize finestra
+            window.addEventListener('resize', () => {
+                if (!svg || !projection || !pathGenerator) return;
+                const vp = document.getElementById('mapViewport');
+                if (!vp) return;
+                mapWidth = vp.clientWidth || window.innerWidth;
+                mapHeight = vp.clientHeight || (window.innerHeight - 130);
+
+                svg.attr('viewBox', `0 0 ${mapWidth} ${mapHeight}`);
+                projection
+                    .scale(computeOptimalMapScale(mapWidth, mapHeight))
+                    .translate([mapWidth / 2, mapHeight / 1.92]);
+
+                const lEdge = projection([-180, 0])[0];
+                const rEdge = projection([180, 0])[0];
+                worldCopyWidth = Math.abs(rEdge - lEdge);
+
+                gCountries.selectAll('.world-copy')
+                    .data(HORIZONTAL_OFFSETS)
+                    .attr('transform', offsetIndex => `translate(${offsetIndex * worldCopyWidth}, 0)`);
+
+                gCountries.selectAll('.country-path').attr('d', pathGenerator);
+
+                gPins.selectAll('.pins-copy')
+                    .data(HORIZONTAL_OFFSETS)
+                    .attr('transform', offsetIndex => `translate(${offsetIndex * worldCopyWidth}, 0)`);
+
+                gPins.selectAll('.microstate-pin')
+                    .attr('cx', d => projection(d.coords)[0])
+                    .attr('cy', d => projection(d.coords)[1]);
+            });
         }
 
         function matchFeatureToCountry(feature) {
@@ -969,10 +1070,15 @@
                     .attr('cx', d => projection(d.coords)[0])
                     .attr('cy', d => projection(d.coords)[1])
                     .attr('r', 4.5)
-                    .on('mousemove', (event, d) => showMapTooltip(event, d))
+                    .on('mousemove', (event, d) => {
+                        if (window.matchMedia('(pointer: fine)').matches) {
+                            showMapTooltip(event, d);
+                        }
+                    })
                     .on('mouseleave', hideMapTooltip)
                     .on('click', (event, d) => {
                         event.stopPropagation();
+                        hideMapTooltip();
                         handleCountryMapClick(d);
                     });
             });
@@ -1085,7 +1191,8 @@
 
             const cfg = CONTINENT_CONFIG[contName];
             const [x, y] = projection(cfg.center);
-            const scale = cfg.scale;
+            const isPortrait = mapHeight > mapWidth;
+            const scale = isPortrait ? cfg.scale * 0.85 : cfg.scale;
             const translate = [mapWidth / 2 - scale * x, mapHeight / 2 - scale * y];
 
             svg.transition().duration(750).call(
@@ -1094,6 +1201,21 @@
             );
             regionLabel.textContent = `VISTA: ${contName.toUpperCase()}`;
             resetBtn.classList.remove('hidden');
+        }
+
+        function toggleMobileSidebar(forceOpen) {
+            const sidebar = document.getElementById('sidebarPanel');
+            const backdrop = document.getElementById('sidebarBackdrop');
+            const isClosed = sidebar.classList.contains('-translate-x-full');
+            const shouldOpen = typeof forceOpen === 'boolean' ? forceOpen : isClosed;
+
+            if (shouldOpen) {
+                sidebar.classList.remove('-translate-x-full');
+                backdrop.classList.remove('hidden');
+            } else {
+                sidebar.classList.add('-translate-x-full');
+                backdrop.classList.add('hidden');
+            }
         }
 
         function handleCountryMapClick(country) {
@@ -1141,12 +1263,20 @@
             const country = COUNTRY_BY_ID[countryId];
             if (!country) return;
 
+            // Su mobile chiude la sidebar se era aperta per mostrare nitidamente la scheda
+            if (window.innerWidth < 1024) {
+                toggleMobileSidebar(false);
+            }
+
             state.selectedCountryId = countryId;
             const rec = state.records[countryId] || { status: null, year: '', cities: '', notes: '' };
             const contColor = getContinentColor(country.cont);
 
             const card = document.getElementById('countryDetailCard');
             card.classList.remove('hidden');
+
+            const bottomHint = document.getElementById('mapBottomHint');
+            if (bottomHint) bottomHint.classList.add('opacity-0');
 
             document.getElementById('cardTopAccentBar').style.backgroundColor = contColor;
             document.getElementById('cardFlagEmoji').textContent = country.flag;
@@ -1195,6 +1325,8 @@
         function closeCountryCard() {
             state.selectedCountryId = null;
             document.getElementById('countryDetailCard').classList.add('hidden');
+            const bottomHint = document.getElementById('mapBottomHint');
+            if (bottomHint) bottomHint.classList.remove('opacity-0');
             updateMapStyles();
         }
 
@@ -1257,6 +1389,15 @@
             document.getElementById('passportBadgeCount').textContent = totalVisited;
             document.getElementById('travelerRank').textContent = getTravelerRank(totalVisited);
 
+            // Sync indicatori Mobile Portrait
+            const mobVisited = document.getElementById('mobileVisitedCount');
+            if (mobVisited) {
+                mobVisited.textContent = totalVisited;
+                document.getElementById('mobileWorldPct').textContent = `${worldPct}%`;
+                document.getElementById('mobileContCount').textContent = touchedContinents;
+                document.getElementById('mobileWishCount').textContent = totalWishlist;
+            }
+
             const barsHtml = Object.keys(CONTINENT_CONFIG).map(contKey => {
                 const stat = contStats[contKey];
                 const pct = Math.round((stat.visited / stat.total) * 100);
@@ -1265,15 +1406,15 @@
 
                 return `
                     <button onclick="handleContinentBarClick('${contKey}')" 
-                        class="flex-1 min-w-[115px] p-2 rounded-xl border ${isActive ? 'border-stone-400 dark:border-stone-500 bg-stone-100/90 dark:bg-stone-800/80' : 'border-stone-200/70 dark:border-stone-800/70 hover:bg-stone-100/60 dark:hover:bg-stone-800/40'} transition text-left group">
-                        <div class="flex items-center justify-between text-[11px] font-mono mb-1">
-                            <span class="font-bold flex items-center gap-1.5">
-                                <span class="w-2 h-2 rounded-full" style="background-color:${color}"></span>
-                                ${contKey}
+                        class="flex-1 min-w-[102px] sm:min-w-[115px] p-1.5 sm:p-2 rounded-xl border ${isActive ? 'border-stone-400 dark:border-stone-500 bg-stone-100/90 dark:bg-stone-800/80' : 'border-stone-200/70 dark:border-stone-800/70 hover:bg-stone-100/60 dark:hover:bg-stone-800/40'} transition text-left group shrink-0">
+                        <div class="flex items-center justify-between text-[10px] sm:text-[11px] font-mono mb-1">
+                            <span class="font-bold flex items-center gap-1">
+                                <span class="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full shrink-0" style="background-color:${color}"></span>
+                                <span class="truncate">${contKey}</span>
                             </span>
-                            <span class="text-stone-400 group-hover:text-stone-700 dark:group-hover:text-stone-200">${stat.visited}/${stat.total}</span>
+                            <span class="text-stone-400 group-hover:text-stone-700 dark:group-hover:text-stone-200 ml-1">${stat.visited}/${stat.total}</span>
                         </div>
-                        <div class="w-full h-1.5 rounded-full bg-stone-200 dark:bg-stone-800 overflow-hidden">
+                        <div class="w-full h-1 sm:h-1.5 rounded-full bg-stone-200 dark:bg-stone-800 overflow-hidden">
                             <div class="h-full rounded-full transition-all duration-500" style="width:${pct}%; background-color:${color}"></div>
                         </div>
                     </button>
@@ -1455,6 +1596,7 @@
         };
 
         function refreshAllUI() {
+            persistRecords();
             updateMapStyles();
             renderHeaderStatsAndContinentBars();
             renderSidebarChecklist();
@@ -1523,13 +1665,22 @@
             });
             document.getElementById('cardSaveDetailsBtn').addEventListener('click', saveCardDetails);
 
-            document.getElementById('zoomInBtn').addEventListener('click', () => {
-                svg.transition().duration(300).call(zoomBehavior.scaleBy, 1.45);
-            });
-            document.getElementById('zoomOutBtn').addEventListener('click', () => {
-                svg.transition().duration(300).call(zoomBehavior.scaleBy, 0.7);
-            });
-            document.getElementById('zoomResetIconBtn').addEventListener('click', () => zoomToContinent('ALL'));
+            const zoomInBtn = document.getElementById('zoomInBtn');
+            if (zoomInBtn) {
+                zoomInBtn.addEventListener('click', () => {
+                    svg.transition().duration(300).call(zoomBehavior.scaleBy, 1.45);
+                });
+            }
+            const zoomOutBtn = document.getElementById('zoomOutBtn');
+            if (zoomOutBtn) {
+                zoomOutBtn.addEventListener('click', () => {
+                    svg.transition().duration(300).call(zoomBehavior.scaleBy, 0.7);
+                });
+            }
+            const zoomResetIconBtn = document.getElementById('zoomResetIconBtn');
+            if (zoomResetIconBtn) {
+                zoomResetIconBtn.addEventListener('click', () => zoomToContinent('ALL'));
+            }
             document.getElementById('resetZoomBtn').addEventListener('click', () => {
                 state.continentFilter = 'ALL';
                 syncContinentChipButtons();
@@ -1543,9 +1694,14 @@
                 updateMapStyles();
             });
 
-            const sidebar = document.getElementById('sidebarPanel');
             document.getElementById('mobileSidebarToggle').addEventListener('click', () => {
-                sidebar.classList.toggle('-translate-x-full');
+                toggleMobileSidebar();
+            });
+            document.getElementById('closeSidebarMobileBtn').addEventListener('click', () => {
+                toggleMobileSidebar(false);
+            });
+            document.getElementById('sidebarBackdrop').addEventListener('click', () => {
+                toggleMobileSidebar(false);
             });
 
             const passportModal = document.getElementById('passportModal');
@@ -1602,6 +1758,7 @@
         }
 
         window.addEventListener('DOMContentLoaded', () => {
+            loadSavedRecords();
             lucide.createIcons();
             setupAppIconsAndManifest();
             setupEventListeners();
