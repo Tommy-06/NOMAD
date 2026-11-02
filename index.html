@@ -305,7 +305,7 @@
                     </div>
                 </div>
 
-                <div class="absolute top-4 left-4 z-10 flex flex-wrap items-center gap-2 pointer-events-auto">
+                <div class="4 left-4 z-10 flex flex-wrap items-center gap-2 pointer-events-auto">
                     <div class="px-3 py-1.5 rounded-xl bg-white/85 dark:bg-[#151921]/85 backdrop-blur-md border border-stone-200/80 dark:border-stone-800/80 shadow-sm flex items-center gap-2.5 text-xs font-mono">
                         <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
                         <span id="activeRegionLabel" class="font-bold">VISTA: GLOBALE</span>
@@ -317,20 +317,7 @@
                         <span>Pin Microstati: <strong id="microPinStateText">ON</strong></span>
                     </button>
                 </div>
-
-                <div class="absolute top-4 right-4 z-10 flex flex-col gap-1.5 bg-white/85 dark:bg-[#151921]/85 backdrop-blur-md p-1.5 rounded-2xl border border-stone-200/80 dark:border-stone-800/80 shadow-sm">
-                    <button id="zoomInBtn" class="p-2 rounded-xl hover:bg-stone-200/60 dark:hover:bg-stone-800 text-stone-700 dark:text-stone-300 transition" title="Zoom In">
-                        <i data-lucide="plus" class="w-4 h-4"></i>
-                    </button>
-                    <button id="zoomOutBtn" class="p-2 rounded-xl hover:bg-stone-200/60 dark:hover:bg-stone-800 text-stone-700 dark:text-stone-300 transition" title="Zoom Out">
-                        <i data-lucide="minus" class="w-4 h-4"></i>
-                    </button>
-                    <div class="h-[1px] bg-stone-200 dark:bg-stone-800 my-0.5"></div>
-                    <button id="zoomResetIconBtn" class="p-2 rounded-xl hover:bg-stone-200/60 dark:hover:bg-stone-800 text-stone-700 dark:text-stone-300 transition" title="Centra Mappa">
-                        <i data-lucide="maximize-2" class="w-4 h-4"></i>
-                    </button>
-                </div>
-
+                
                 <div id="mapTooltip" class="pointer-events-none fixed z-50 hidden px-3 py-2 rounded-xl bg-stone-900/95 dark:bg-stone-950/95 text-white border border-stone-700/70 shadow-xl backdrop-blur-md transition-opacity duration-75"></div>
 
                 <svg id="worldMapSvg" class="w-full h-full cursor-grab active:cursor-grabbing"></svg>
