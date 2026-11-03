@@ -240,9 +240,9 @@
                         <i data-lucide="sliders-horizontal" class="w-4 h-4 pointer-events-none"></i>
                     </button>
 
-                    <button id="themeToggleBtn" type="button" class="p-2 rounded-xl border border-stone-200 dark:border-stone-800 hover:bg-stone-100 dark:hover:bg-stone-800/60 text-stone-600 dark:text-stone-400 active:scale-95 transition cursor-pointer" title="Cambia Tema Chiaro/Scuro">
-                        <i data-lucide="sun" class="w-4 h-4 hidden dark:block text-amber-400 pointer-events-none"></i>
-                        <i data-lucide="moon" class="w-4 h-4 block dark:hidden text-stone-700 pointer-events-none"></i>
+                    <button id="openCloudModalBtn" type="button" class="relative p-2 rounded-xl border border-stone-200 dark:border-stone-800 hover:bg-stone-100 dark:hover:bg-stone-800/60 text-stone-600 dark:text-stone-400 active:scale-95 transition cursor-pointer" title="Salvataggio Cloud & Login Google">
+                        <i data-lucide="cloud" class="w-4 h-4 pointer-events-none" id="headerCloudIcon"></i>
+                        <span id="cloudStatusDot" class="w-2 h-2 rounded-full bg-stone-400 absolute top-1.5 right-1.5 border border-white dark:border-[#12151A]"></span>
                     </button>
                 </div>
             </div>
@@ -603,6 +603,375 @@
             </div>
         </div>
     </div>
+
+    <!-- MODAL 5: PROFILO GOOGLE & SINCRONIZZAZIONE CLOUD MULTI-DISPOSITIVO -->
+    <div id="cloudModal" class="fixed inset-0 z-50 hidden bg-black/75 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4">
+        <div class="bg-white dark:bg-[#151921] border-t sm:border border-stone-200 dark:border-stone-800 rounded-t-3xl sm:rounded-3xl max-w-lg w-full p-5 sm:p-6 space-y-5 shadow-2xl max-h-[92dvh] overflow-y-auto">
+            
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-9 h-9 rounded-xl bg-[#E04F33]/15 text-[#E04F33] flex items-center justify-center">
+                        <i data-lucide="cloud" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-mono font-bold text-sm sm:text-base">PROFILO & CLOUD SYNC</h3>
+                        <p id="cloudStatusSubtitle" class="text-[11px] font-mono text-stone-500 dark:text-stone-400">Sincronizza la mappa su tutti i tuoi dispositivi</p>
+                    </div>
+                </div>
+                <button id="closeCloudModalBtn" type="button" class="p-1.5 rounded-xl hover:bg-stone-100 dark:hover:bg-stone-800 text-stone-400">
+                    <i data-lucide="x" class="w-4 h-4"></i>
+                </button>
+            </div>
+
+            <!-- Box Utente Connesso (Visibile quando loggato con Google o Cloud ID) -->
+            <div id="cloudUserConnectedBox" class="hidden p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-between gap-3">
+                <div class="flex items-center gap-3 min-w-0">
+                    <img id="cloudUserAvatar" src="https://placehold.co/80x80/10b981/ffffff?text=N" alt="Avatar" class="w-10 h-10 rounded-full border border-emerald-500/40 shrink-0">
+                    <div class="min-w-0">
+                        <div class="flex items-center gap-1.5">
+                            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                            <span id="cloudUserName" class="font-bold text-xs sm:text-sm truncate">Viaggiatore Nomad</span>
+                        </div>
+                        <p id="cloudUserEmail" class="font-mono text-[10px] text-stone-500 dark:text-stone-400 truncate">Sincronizzazione Cloud Attiva</p>
+                    </div>
+                </div>
+                <button id="googleLogoutBtn" type="button" class="px-3 py-1.5 rounded-xl border border-stone-300 dark:border-stone-700 hover:bg-stone-200 dark:hover:bg-stone-800 font-mono text-[11px] font-bold shrink-0 transition">
+                    Esci
+                </button>
+            </div>
+
+            <!-- Sezione 1: Login con Google (Un click) -->
+            <div id="googleLoginSection" class="space-y-2.5">
+                <button id="googleSignInBtn" type="button" class="w-full py-3 px-4 rounded-2xl bg-white hover:bg-stone-50 text-stone-900 border border-stone-300 shadow-sm font-sans text-xs sm:text-sm font-bold flex items-center justify-center gap-3 active:scale-[0.99] transition cursor-pointer">
+                    <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24">
+                        <path fill="#EA4335" d="M12 5c1.6 0 3 .6 4.1 1.7l3.1-3.1C17.3 1.8 14.8 1 12 1 7.4 1 3.5 3.6 1.6 7.4l3.7 2.8C6.2 7.2 8.9 5 12 5z"/>
+                        <path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.6-.2-2.3H12v4.5h6.5c-.3 1.5-1.1 2.8-2.4 3.6l3.7 2.9c2.2-2 3.7-5 3.7-8.7z"/>
+                        <path fill="#FBBC05" d="M5.3 14.8c-.2-.8-.4-1.6-.4-2.5s.2-1.7.4-2.5L1.6 7C.6 9 .1 11.2.1 13.5s.5 4.5 1.5 6.5l3.7-2.9z"/>
+                        <path fill="#34A853" d="M12 23c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3.1 0-5.8-2.1-6.7-5l-3.7 2.8C3.5 19.9 7.4 23 12 23z"/>
+                    </svg>
+                    <span>Accedi con Google</span>
+                </button>
+                <p class="text-[11px] text-stone-500 dark:text-stone-400 text-center">
+                    Accedi col tuo account Google per ritrovare automaticamente paesi, note e timbri su telefono e PC.
+                </p>
+            </div>
+
+            <!-- Sezione 2: Codice Cloud Multi-Dispositivo Istantaneo (Funziona subito senza configurazioni) -->
+            <div class="p-4 rounded-2xl bg-stone-100/90 dark:bg-stone-900/90 border border-stone-200/80 dark:border-stone-800 space-y-3">
+                <div class="flex items-center justify-between">
+                    <span class="font-mono text-[11px] font-bold uppercase text-[#E04F33] flex items-center gap-1.5">
+                        <i data-lucide="key-round" class="w-3.5 h-3.5"></i>
+                        <span>Codice Passaporto Cloud (Multi-Device)</span>
+                    </span>
+                    <span id="cloudLiveBadge" class="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-500 font-bold">ATTIVO</span>
+                </div>
+                <p class="text-xs text-stone-600 dark:text-stone-400 leading-relaxed">
+                    Inserisci lo stesso <strong>Codice Passaporto</strong> (es. <code class="px-1 py-0.5 rounded bg-stone-200 dark:bg-stone-800 font-mono text-[11px]">nomad-marco-99</code>) sul tuo telefono e sul computer per sincronizzare la mappa in tempo reale nel cloud:
+                </p>
+                <div class="flex items-center gap-2">
+                    <input id="cloudPassportKeyInput" type="text" placeholder="es. nomad-tuonome-segreto" 
+                        class="flex-1 px-3 py-2 rounded-xl bg-white dark:bg-stone-950 border border-stone-300 dark:border-stone-700 font-mono text-xs focus:outline-none focus:ring-2 focus:ring-[#E04F33]/50">
+                    <button id="connectPassportKeyBtn" type="button" class="px-3.5 py-2 rounded-xl bg-stone-900 dark:bg-stone-100 text-white dark:text-stone-950 font-mono text-xs font-bold active:scale-95 transition shrink-0 cursor-pointer">
+                        Collega
+                    </button>
+                </div>
+                <p id="cloudSyncFeedback" class="text-[11px] font-mono text-emerald-500 hidden"></p>
+            </div>
+
+            <!-- Sezione 3 (Espandibile): Configurazione Firebase Personale per GitHub Pages / Dominio Proprio -->
+            <details class="group rounded-2xl border border-stone-200 dark:border-stone-800 px-4 py-3 text-xs">
+                <summary class="font-mono font-bold text-stone-600 dark:text-stone-300 cursor-pointer flex items-center justify-between">
+                    <span>⚙️ Configura il tuo Google Firebase (Per sito esterno / GitHub)</span>
+                    <i data-lucide="chevron-down" class="w-4 h-4 group-open:rotate-180 transition-transform"></i>
+                </summary>
+                <div class="pt-3 space-y-2.5 text-stone-500 dark:text-stone-400 border-t border-stone-200/60 dark:border-stone-800 mt-2.5">
+                    <p class="text-[11px] leading-relaxed">
+                        Se ospiti il file HTML sul tuo sito o su GitHub Pages, incolla qui l'oggetto <code class="font-mono">firebaseConfig</code> gratuito della tua console Firebase (con <em>Authentication -> Google</em> e <em>Firestore Database</em> attivi):
+                    </p>
+                    <textarea id="customFirebaseConfigInput" rows="3" placeholder='{"apiKey": "AIza...", "authDomain": "tuo-app.firebaseapp.com", "projectId": "tuo-app"}' 
+                        class="w-full p-2.5 rounded-xl bg-stone-100 dark:bg-stone-900 border border-stone-200 dark:border-stone-800 font-mono text-[10px] text-stone-800 dark:text-stone-200 focus:outline-none"></textarea>
+                    <button id="saveCustomFirebaseBtn" type="button" class="w-full py-2 rounded-xl bg-[#E04F33] text-white font-mono text-xs font-bold active:scale-95 transition">
+                        Salva Configurazione Firebase & Ricarica
+                    </button>
+                </div>
+            </details>
+        </div>
+    </div>
+
+    <!-- FIREBASE CLOUD & GOOGLE AUTH MODULE -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        const CUSTOM_FB_STORAGE_KEY = 'nomad_custom_firebase_config_v1';
+        const PASSPORT_KEY_STORAGE = 'nomad_cloud_passport_key_v1';
+
+        let db = null;
+        let auth = null;
+        let currentUser = null;
+        let unsubscribeCloud = null;
+        let isApplyingRemoteUpdate = false;
+
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'nomad-atlas-default';
+
+        function getActiveFirebaseConfig() {
+            try {
+                const customRaw = localStorage.getItem(CUSTOM_FB_STORAGE_KEY);
+                if (customRaw) {
+                    const parsed = JSON.parse(customRaw);
+                    if (parsed && parsed.apiKey && parsed.projectId) return { config: parsed, isCustom: true };
+                }
+            } catch (e) {}
+
+            if (typeof __firebase_config !== 'undefined' && __firebase_config) {
+                try {
+                    return { config: JSON.parse(__firebase_config), isCustom: false };
+                } catch (e) {}
+            }
+            return null;
+        }
+
+        function updateCloudStatusUI(status, userObj = null, customKey = '') {
+            const dot = document.getElementById('cloudStatusDot');
+            const sub = document.getElementById('cloudStatusSubtitle');
+            const userBox = document.getElementById('cloudUserConnectedBox');
+            const googleSection = document.getElementById('googleLoginSection');
+            const nameEl = document.getElementById('cloudUserName');
+            const emailEl = document.getElementById('cloudUserEmail');
+            const avatarEl = document.getElementById('cloudUserAvatar');
+
+            if (status === 'connected') {
+                if (dot) dot.className = "w-2 h-2 rounded-full bg-emerald-500 absolute top-1.5 right-1.5 border border-white dark:border-[#12151A]";
+                if (sub) sub.textContent = "✓ Sincronizzato in tempo reale nel Cloud";
+                if (userObj && !userObj.isAnonymous) {
+                    userBox.classList.remove('hidden');
+                    googleSection.classList.add('hidden');
+                    nameEl.textContent = userObj.displayName || 'Account Google';
+                    emailEl.textContent = userObj.email || 'Sincronizzato con Google';
+                    if (userObj.photoURL) avatarEl.src = userObj.photoURL;
+                } else if (customKey) {
+                    userBox.classList.remove('hidden');
+                    googleSection.classList.remove('hidden');
+                    nameEl.textContent = `Passaporto: ${customKey}`;
+                    emailEl.textContent = 'Sincronizzato tramite Codice Cloud';
+                }
+            } else {
+                if (dot) dot.className = "w-2 h-2 rounded-full bg-amber-400 absolute top-1.5 right-1.5 border border-white dark:border-[#12151A]";
+            }
+        }
+
+        function showCloudFeedback(msg, isError = false) {
+            const fb = document.getElementById('cloudSyncFeedback');
+            if (!fb) return;
+            fb.textContent = msg;
+            fb.className = `text-[11px] font-mono ${isError ? 'text-red-500' : 'text-emerald-500'}`;
+            fb.classList.remove('hidden');
+        }
+
+        // Restituisce il riferimento al documento Firestore (basato su Google UID oppure sul Codice Passaporto condiviso)
+        function getTargetDocRef(passportKey) {
+            if (!db || !currentUser) return null;
+            const cleanKey = (passportKey || '').trim().toLowerCase().replace(/[^a-z0-9-_]/g, '-');
+            if (cleanKey) {
+                return doc(db, 'artifacts', appId, 'public', 'data', 'nomad_passports', cleanKey);
+            }
+            return doc(db, 'artifacts', appId, 'users', currentUser.uid, 'profile', 'travel_data');
+        }
+
+        // Salva lo stato attuale nel Cloud
+        window.pushStateToCloud = async function() {
+            if (!db || !currentUser || isApplyingRemoteUpdate) return;
+            const savedKey = localStorage.getItem(PASSPORT_KEY_STORAGE) || '';
+            // Sincronizza automaticamente se l'utente ha impostato un Codice Passaporto o ha fatto login Google
+            if (!savedKey && currentUser.isAnonymous) return;
+
+            const ref = getTargetDocRef(savedKey);
+            if (!ref) return;
+
+            try {
+                await setDoc(ref, {
+                    recordsJson: JSON.stringify(window.nomadGetState().records || {}),
+                    homeCountryId: window.nomadGetState().homeCountryId || 'ITA',
+                    updatedAt: Date.now()
+                }, { merge: true });
+            } catch (err) {
+                console.warn("Errore salvataggio cloud:", err);
+            }
+        };
+
+        // Attiva l'ascolto in tempo reale sul documento Cloud
+        function attachRealtimeCloudListener() {
+            if (unsubscribeCloud) {
+                unsubscribeCloud();
+                unsubscribeCloud = null;
+            }
+            if (!db || !currentUser) return;
+
+            const savedKey = localStorage.getItem(PASSPORT_KEY_STORAGE) || '';
+            if (!savedKey && currentUser.isAnonymous) return;
+
+            const ref = getTargetDocRef(savedKey);
+            if (!ref) return;
+
+            unsubscribeCloud = onSnapshot(ref, (snap) => {
+                if (snap.exists()) {
+                    const data = snap.data();
+                    if (data && data.recordsJson) {
+                        try {
+                            const remoteRecords = JSON.parse(data.recordsJson);
+                            const localRecordsCount = Object.keys(window.nomadGetState().records || {}).length;
+                            const remoteRecordsCount = Object.keys(remoteRecords || {}).length;
+
+                            // Se il cloud ha dati o se siamo già sincronizzati, applica i dati remoti
+                            if (remoteRecordsCount > 0 || localRecordsCount === 0) {
+                                isApplyingRemoteUpdate = true;
+                                window.nomadApplyCloudData(remoteRecords, data.homeCountryId);
+                                isApplyingRemoteUpdate = false;
+                            } else if (localRecordsCount > 0 && remoteRecordsCount === 0) {
+                                // Se il cloud è vuoto ma il telefono ha già dei viaggi, caricali subito nel cloud
+                                window.pushStateToCloud();
+                            }
+                        } catch (e) {}
+                    }
+                } else {
+                    // Primo collegamento: carica i viaggi locali sul nuovo profilo cloud
+                    window.pushStateToCloud();
+                }
+                updateCloudStatusUI('connected', currentUser, savedKey);
+            }, (err) => {
+                console.warn("Errore listener Cloud:", err);
+            });
+        }
+
+        async function initCloudSync() {
+            const fbSetup = getActiveFirebaseConfig();
+            const savedKey = localStorage.getItem(PASSPORT_KEY_STORAGE) || '';
+            const keyInput = document.getElementById('cloudPassportKeyInput');
+            if (keyInput && savedKey) keyInput.value = savedKey;
+
+            const customInput = document.getElementById('customFirebaseConfigInput');
+            if (customInput && localStorage.getItem(CUSTOM_FB_STORAGE_KEY)) {
+                customInput.value = localStorage.getItem(CUSTOM_FB_STORAGE_KEY);
+            }
+
+            if (!fbSetup) return;
+
+            try {
+                const app = initializeApp(fbSetup.config);
+                auth = getAuth(app);
+                db = getFirestore(app);
+
+                // RULE 3: Autenticazione prima di ogni query
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token && !fbSetup.isCustom) {
+                    await signInWithCustomToken(auth, __initial_auth_token);
+                } else if (!auth.currentUser) {
+                    await signInAnonymously(auth);
+                }
+
+                onAuthStateChanged(auth, (user) => {
+                    currentUser = user;
+                    if (user) {
+                        const activeKey = localStorage.getItem(PASSPORT_KEY_STORAGE) || '';
+                        if (!user.isAnonymous || activeKey) {
+                            updateCloudStatusUI('connected', user, activeKey);
+                            attachRealtimeCloudListener();
+                        }
+                    }
+                });
+            } catch (e) {
+                console.warn("Inizializzazione Firebase:", e);
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            initCloudSync();
+
+            // Pulsante Accedi con Google
+            const googleBtn = document.getElementById('googleSignInBtn');
+            if (googleBtn) {
+                googleBtn.addEventListener('click', async () => {
+                    if (!auth) {
+                        showCloudFeedback("Incolla la tua configurazione Firebase qui sotto o usa il Codice Passaporto Cloud.", true);
+                        return;
+                    }
+                    try {
+                        const provider = new GoogleAuthProvider();
+                        const result = await signInWithPopup(auth, provider);
+                        currentUser = result.user;
+                        showCloudFeedback(`✓ Connesso come ${currentUser.displayName || currentUser.email}!`);
+                        updateCloudStatusUI('connected', currentUser, '');
+                        attachRealtimeCloudListener();
+                        await window.pushStateToCloud();
+                    } catch (err) {
+                        // In un iframe (come l'anteprima o domini non autorizzati) Google blocca i popup OAuth per sicurezza:
+                        // guidiamo subito l'utente al Codice Passaporto Cloud o alla configurazione dominio
+                        showCloudFeedback("Nota: L'accesso popup Google richiede che il tuo dominio sia autorizzato nella console Firebase. Usa il Codice Passaporto Cloud qui sotto per sincronizzare subito!", true);
+                    }
+                });
+            }
+
+            // Pulsante Logout
+            const logoutBtn = document.getElementById('googleLogoutBtn');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', async () => {
+                    localStorage.removeItem(PASSPORT_KEY_STORAGE);
+                    document.getElementById('cloudPassportKeyInput').value = '';
+                    if (unsubscribeCloud) unsubscribeCloud();
+                    if (auth && currentUser && !currentUser.isAnonymous) {
+                        await signOut(auth);
+                        await signInAnonymously(auth);
+                    }
+                    document.getElementById('cloudUserConnectedBox').classList.add('hidden');
+                    document.getElementById('googleLoginSection').classList.remove('hidden');
+                    updateCloudStatusUI('disconnected');
+                    showCloudFeedback("Disconnesso dal profilo Cloud.");
+                });
+            }
+
+            // Pulsante Collega Codice Passaporto Cloud
+            const connectKeyBtn = document.getElementById('connectPassportKeyBtn');
+            if (connectKeyBtn) {
+                connectKeyBtn.addEventListener('click', async () => {
+                    const rawVal = document.getElementById('cloudPassportKeyInput').value.trim();
+                    if (rawVal.length < 4) {
+                        showCloudFeedback("Inserisci un codice di almeno 4 caratteri (es. nomad-marco-99)", true);
+                        return;
+                    }
+                    const cleanKey = rawVal.toLowerCase().replace(/[^a-z0-9-_]/g, '-');
+                    localStorage.setItem(PASSPORT_KEY_STORAGE, cleanKey);
+                    document.getElementById('cloudPassportKeyInput').value = cleanKey;
+                    attachRealtimeCloudListener();
+                    await window.pushStateToCloud();
+                    showCloudFeedback(`✓ Passaporto "${cleanKey}" sincronizzato nel Cloud!`);
+                });
+            }
+
+            // Salva configurazione Firebase personalizzata
+            const saveFbBtn = document.getElementById('saveCustomFirebaseBtn');
+            if (saveFbBtn) {
+                saveFbBtn.addEventListener('click', () => {
+                    const val = document.getElementById('customFirebaseConfigInput').value.trim();
+                    if (!val) {
+                        localStorage.removeItem(CUSTOM_FB_STORAGE_KEY);
+                        location.reload();
+                        return;
+                    }
+                    try {
+                        const parsed = JSON.parse(val);
+                        if (parsed.apiKey && parsed.projectId) {
+                            localStorage.setItem(CUSTOM_FB_STORAGE_KEY, JSON.stringify(parsed));
+                            location.reload();
+                        } else {
+                            showCloudFeedback("Il JSON deve contenere apiKey e projectId.", true);
+                        }
+                    } catch (e) {
+                        showCloudFeedback("Formato JSON non valido.", true);
+                    }
+                });
+            }
+        });
+    </script>
 
     <!-- SCRIPT APPLICATION LOGIC -->
     <script>
@@ -1701,7 +2070,25 @@
             updateMapStyles();
             renderHeaderStatsAndContinentBars();
             renderSidebarChecklist();
+            if (typeof window.pushStateToCloud === 'function') {
+                window.pushStateToCloud();
+            }
         }
+
+        // Helpers esposti al modulo Cloud Firebase per leggere e aggiornare i viaggi in tempo reale
+        window.nomadGetState = () => state;
+        window.nomadApplyCloudData = (remoteRecords, remoteHomeId) => {
+            if (remoteRecords && typeof remoteRecords === 'object') {
+                state.records = remoteRecords;
+            }
+            if (remoteHomeId && COUNTRY_BY_ID[remoteHomeId]) {
+                state.homeCountryId = remoteHomeId;
+            }
+            persistRecords();
+            updateMapStyles();
+            renderHeaderStatsAndContinentBars();
+            renderSidebarChecklist();
+        };
 
         // ============================================================================
         // NOMAD WRAPPED — CALCOLO DISTANZE HAVERSINE & EQUIVALENZE GIOCOSE
@@ -2525,11 +2912,6 @@
                 renderHeaderStatsAndContinentBars();
             });
 
-            document.getElementById('themeToggleBtn').addEventListener('click', () => {
-                document.documentElement.classList.toggle('dark');
-                updateMapStyles();
-            });
-
             document.getElementById('mobileSidebarToggle').addEventListener('click', () => {
                 toggleMobileSidebar();
             });
@@ -2652,6 +3034,24 @@
                 refreshAllUI();
                 confirmResetModal.classList.add('hidden');
                 dataModal.classList.add('hidden');
+            });
+
+            // Eventi Modal CLOUD & GOOGLE LOGIN
+            const cloudModal = document.getElementById('cloudModal');
+            document.getElementById('openCloudModalBtn').addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                closeCountryCard();
+                toggleMobileSidebar(false);
+                cloudModal.classList.remove('hidden');
+            });
+            document.getElementById('closeCloudModalBtn').addEventListener('click', () => {
+                cloudModal.classList.add('hidden');
+            });
+            cloudModal.addEventListener('click', (e) => {
+                if (e.target === cloudModal) {
+                    cloudModal.classList.add('hidden');
+                }
             });
 
             // Eventi Modal NOMAD WRAPPED
