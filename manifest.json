@@ -1,17 +1,23 @@
 {
-  "name": "NOMAD // ATLAS — Travel Tracker",
-  "short_name": "NOMAD",
-  "description": "Atlante interattivo di viaggio e passaporto digitale",
-  "start_url": "./index.html",
-  "display": "standalone",
-  "background_color": "#050505",
-  "theme_color": "#050505",
-  "icons": [
-    {
-      "src": "./logo.png",
-      "sizes": "512x512",
-      "type": "image/jpeg",
-      "purpose": "any maskable"
-    }
-  ]
+"name": "NOMAD // ATLAS - Travel Tracker",
+"short_name": "NOMAD",
+"description": "Atlante interattivo di viaggio e passaporto digitale",
+"start_url": "./index.html",
+"display": "standalone",
+"background_color": "#0D0F12",
+"theme_color": "#0D0F12",
+"icons": [
+{
+"src": "logo.png",
+"sizes": "512x512",
+"type": "image/png",
+"purpose": "any"
+},
+{
+"src": "logo.png",
+"sizes": "512x512",
+"type": "image/png",
+"purpose": "maskable"
+}
+]
 }
