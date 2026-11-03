@@ -96,11 +96,11 @@
         <header class="shrink-0 border-b border-stone-800/80 bg-[#12151A]/95 backdrop-blur-md z-30 px-3 sm:px-5 py-2 flex flex-col gap-2">
             
             <!-- Row 1: Brand + Main Quick Actions -->
-            <div class="flex items-center justify-between gap-2">
-                <div class="flex items-center gap-2.5 min-w-0">
+            <div class="flex items-center justify-between gap-1.5">
+                <div class="flex items-center gap-2 min-w-0">
                     <!-- NOMAD Vector Logo -->
-                    <div class="w-9 h-9 rounded-xl bg-black border border-stone-700/80 flex items-center justify-center shrink-0 shadow-sm overflow-hidden">
-                        <svg viewBox="0 0 120 120" class="w-8 h-8">
+                    <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-black border border-stone-700/80 flex items-center justify-center shrink-0 shadow-sm overflow-hidden">
+                        <svg viewBox="0 0 120 120" class="w-7 h-7 sm:w-8 sm:h-8">
                             <rect width="120" height="120" rx="22" fill="#000000"/>
                             <path d="M22 44 C28 36, 40 36, 45 43 C42 49, 36 52, 33 58 C38 61, 42 66, 39 76 C35 78, 33 70, 31 64 C27 57, 22 52, 22 44 Z" fill="#F5F3EB"/>
                             <path d="M56 42 C66 36, 84 36, 94 45 C92 52, 85 56, 78 58 C74 64, 67 66, 63 59 C58 63, 55 72, 60 76 C53 76, 50 67, 52 58 C53 51, 53 45, 56 42 Z" fill="#F5F3EB"/>
@@ -113,26 +113,25 @@
                         </svg>
                     </div>
                     <div class="min-w-0">
-                        <h1 class="font-mono font-bold text-xs sm:text-sm tracking-tight truncate">NOMAD <span class="text-stone-500 font-normal">//</span> ATLAS</h1>
-                        <p class="text-[10px] text-stone-400 font-mono truncate" id="travelerRank">RANK: PRONTO ALLA PARTENZA</p>
+                        <h1 class="font-mono font-bold text-xs sm:text-sm tracking-tight truncate">NOMAD <span class="text-stone-500 font-normal hidden sm:inline">// ATLAS</span></h1>
+                        <p class="text-[9px] sm:text-[10px] text-stone-400 font-mono truncate" id="travelerRank">RANK: PRONTO ALLA PARTENZA</p>
                     </div>
                 </div>
 
                 <!-- Action Buttons -->
-                <div class="flex items-center gap-1.5 shrink-0">
-                    <button id="mobileSidebarToggle" class="lg:hidden flex items-center gap-1 px-2.5 py-1.5 rounded-xl border border-stone-800 bg-stone-900/80 hover:bg-stone-800 text-stone-200 text-[11px] font-mono font-bold transition" title="Lista Paesi">
-                        <i data-lucide="list-filter" class="w-3.5 h-3.5 text-[#E04F33]"></i>
-                        <span class="hidden xs:inline">PAESI</span>
+                <div class="flex items-center gap-1 sm:gap-1.5 shrink-0">
+                    <button id="mobileSidebarToggle" class="lg:hidden flex items-center justify-center p-2 rounded-xl border border-stone-800 bg-stone-900/80 hover:bg-stone-800 text-stone-200 text-[11px] font-mono font-bold transition" title="Lista Paesi">
+                        <i data-lucide="list-filter" class="w-4 h-4 text-[#E04F33]"></i>
                     </button>
 
-                    <button id="openWrappedBtn" class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-gradient-to-r from-[#E04F33] to-amber-500 text-white text-[11px] font-mono font-bold tracking-tight transition shadow-sm hover:opacity-95">
-                        <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+                    <button id="openWrappedBtn" class="flex items-center gap-1 px-2 sm:px-2.5 py-1.5 rounded-xl bg-gradient-to-r from-[#E04F33] to-amber-500 text-white text-[10px] sm:text-[11px] font-mono font-bold tracking-tight transition shadow-sm hover:opacity-95">
+                        <i data-lucide="sparkles" class="w-3.5 h-3.5 shrink-0"></i>
                         <span>WRAPPED</span>
                     </button>
 
-                    <button id="openPassportBtn" class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-stone-100 hover:bg-white text-stone-950 text-[11px] font-mono font-bold tracking-tight transition shadow-sm">
-                        <i data-lucide="stamp" class="w-3.5 h-3.5"></i>
-                        <span class="hidden sm:inline">PASSAPORTO</span>
+                    <button id="openPassportBtn" class="flex items-center gap-1 px-2 sm:px-2.5 py-1.5 rounded-xl bg-stone-100 hover:bg-white text-stone-950 text-[10px] sm:text-[11px] font-mono font-bold tracking-tight transition shadow-sm">
+                        <i data-lucide="stamp" class="w-3.5 h-3.5 shrink-0"></i>
+                        <span class="hidden md:inline">PASSAPORTO</span>
                         <span id="passportBadgeCount" class="px-1.5 py-0.2 rounded-full bg-stone-900/15 text-[10px]">0</span>
                     </button>
 
@@ -1042,12 +1041,14 @@
                         .attr('class', 'country-path')
                         .attr('d', pathGenerator)
                         .on('mousemove', (event, d) => {
+                            if (window.matchMedia('(pointer: coarse)').matches) return;
                             const c = matchFeatureToCountry(d);
                             if (c) showMapTooltip(event, c);
                         })
                         .on('mouseleave', hideMapTooltip)
                         .on('click', (event, d) => {
                             event.stopPropagation();
+                            hideMapTooltip();
                             const c = matchFeatureToCountry(d);
                             if (c) openCountryCard(c.id);
                         });
@@ -1103,10 +1104,14 @@
                     .attr('cx', d => projection(d.coords)[0])
                     .attr('cy', d => projection(d.coords)[1])
                     .attr('r', 4.5)
-                    .on('mousemove', (event, d) => showMapTooltip(event, d))
+                    .on('mousemove', (event, d) => {
+                        if (window.matchMedia('(pointer: coarse)').matches) return;
+                        showMapTooltip(event, d);
+                    })
                     .on('mouseleave', hideMapTooltip)
                     .on('click', (event, d) => {
                         event.stopPropagation();
+                        hideMapTooltip();
                         openCountryCard(d.id);
                     });
             });
@@ -1164,6 +1169,9 @@
         }
 
         function showMapTooltip(event, country) {
+            if (window.matchMedia('(pointer: coarse)').matches || window.innerWidth < 768) {
+                return;
+            }
             const tooltip = document.getElementById('mapTooltip');
             const rec = state.records[country.id];
             const contColor = getContinentColor(country.cont);
@@ -1228,23 +1236,24 @@
         function toggleCountryStatus(countryId, targetStatus) {
             const existing = state.records[countryId] || { status: null, year: '', cities: '', notes: '' };
             if (existing.status === targetStatus) {
-                existing.status = null;
+                delete state.records[countryId];
             } else {
                 existing.status = targetStatus;
                 if (targetStatus === 'visited' && !existing.year) {
                     existing.year = String(new Date().getFullYear());
                 }
-            }
-
-            if (!existing.status && !existing.cities && !existing.notes) {
-                delete state.records[countryId];
-            } else {
                 state.records[countryId] = existing;
             }
 
             saveToLocalStorage();
             refreshAllUI();
             if (state.selectedCountryId === countryId) {
+                const updatedRec = state.records[countryId];
+                if (!updatedRec) {
+                    document.getElementById('cardInputYear').value = '';
+                } else if (updatedRec.year) {
+                    document.getElementById('cardInputYear').value = updatedRec.year;
+                }
                 syncCardButtons(countryId);
             }
         }
@@ -1253,6 +1262,7 @@
             const country = COUNTRY_BY_ID[countryId];
             if (!country) return;
 
+            hideMapTooltip();
             closeMobileSidebar();
             state.selectedCountryId = countryId;
             const rec = state.records[countryId] || { status: null, year: '', cities: '', notes: '' };
@@ -2192,7 +2202,7 @@
                     records: current.records || {},
                     homeCountryId: current.homeCountryId || 'ITA',
                     updatedAt: new Date().toISOString()
-                }, { merge: true });
+                });
             } catch (e) {
                 console.warn("Push to cloud error:", e);
             }
