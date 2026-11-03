@@ -707,13 +707,24 @@
         const CUSTOM_FB_STORAGE_KEY = 'nomad_custom_firebase_config_v1';
         const PASSPORT_KEY_STORAGE = 'nomad_cloud_passport_key_v1';
 
+        // Configurazione ufficiale del tuo progetto Firebase (nomad-87333) già integrata
+        const DEFAULT_USER_FIREBASE_CONFIG = {
+            apiKey: "AIzaSyCI6ItLlVfYtLy-Azsa0x-pHGB2icGv0uE",
+            authDomain: "nomad-87333.firebaseapp.com",
+            projectId: "nomad-87333",
+            storageBucket: "nomad-87333.firebasestorage.app",
+            messagingSenderId: "459560798027",
+            appId: "1:459560798027:web:e0524f25158a8ada77cace",
+            measurementId: "G-E769PTK85Q"
+        };
+
         let db = null;
         let auth = null;
         let currentUser = null;
         let unsubscribeCloud = null;
         let isApplyingRemoteUpdate = false;
 
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'nomad-atlas-default';
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'nomad-87333';
 
         function getActiveFirebaseConfig() {
             try {
@@ -723,6 +734,10 @@
                     if (parsed && parsed.apiKey && parsed.projectId) return { config: parsed, isCustom: true };
                 }
             } catch (e) {}
+
+            if (DEFAULT_USER_FIREBASE_CONFIG && DEFAULT_USER_FIREBASE_CONFIG.apiKey) {
+                return { config: DEFAULT_USER_FIREBASE_CONFIG, isCustom: true };
+            }
 
             if (typeof __firebase_config !== 'undefined' && __firebase_config) {
                 try {
