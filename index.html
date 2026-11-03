@@ -9,8 +9,8 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="NOMAD">
     <link rel="manifest" href="manifest.json">
-    <link rel="icon" type="image/png" href="Logo di viaggio NOMAD_grayscale.png">
-    <link rel="apple-touch-icon" href="Logo di viaggio NOMAD_grayscale.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="logo.png">
+    <link rel="apple-touch-icon" sizes="512x512" href="logo.png">
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -97,20 +97,10 @@
             
             <!-- Row 1: Brand + Main Quick Actions -->
             <div class="flex items-center justify-between gap-1.5">
-                <div class="flex items-center gap-2 min-w-0">
-                    <!-- NOMAD Vector Logo -->
-                    <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-black border border-stone-700/80 flex items-center justify-center shrink-0 shadow-sm overflow-hidden">
-                        <svg viewBox="0 0 120 120" class="w-7 h-7 sm:w-8 sm:h-8">
-                            <rect width="120" height="120" rx="22" fill="#000000"/>
-                            <path d="M22 44 C28 36, 40 36, 45 43 C42 49, 36 52, 33 58 C38 61, 42 66, 39 76 C35 78, 33 70, 31 64 C27 57, 22 52, 22 44 Z" fill="#F5F3EB"/>
-                            <path d="M56 42 C66 36, 84 36, 94 45 C92 52, 85 56, 78 58 C74 64, 67 66, 63 59 C58 63, 55 72, 60 76 C53 76, 50 67, 52 58 C53 51, 53 45, 56 42 Z" fill="#F5F3EB"/>
-                            <circle cx="84" cy="70" r="5" fill="#F5F3EB"/>
-                            <circle cx="16" cy="64" r="3.5" fill="#F5F3EB"/>
-                            <path d="M22 61 Q56 45 93 40" fill="none" stroke="#000000" stroke-width="4.5"/>
-                            <path d="M22 61 Q56 45 93 40" fill="none" stroke="#F5F3EB" stroke-width="2.5" stroke-dasharray="4,4" stroke-linecap="round"/>
-                            <path d="M97 36 L109 32 L103 44 L100 41 L95 44 L94 41 L98 38 Z" fill="#F5F3EB"/>
-                            <text x="60" y="101" text-anchor="middle" fill="#F5F3EB" font-family="Inter, sans-serif" font-weight="800" font-size="21" letter-spacing="1.5">NOMAD</text>
-                        </svg>
+                <div class="flex items-center gap-2.5 min-w-0">
+                    <!-- Official NOMAD logo.png (512x512) -->
+                    <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-black border border-stone-700/80 flex items-center justify-center shrink-0 shadow-sm overflow-hidden">
+                        <img src="logo.png" alt="NOMAD Logo" class="w-full h-full object-contain">
                     </div>
                     <div class="min-w-0">
                         <h1 class="font-mono font-bold text-xs sm:text-sm tracking-tight truncate">NOMAD <span class="text-stone-500 font-normal hidden sm:inline">// ATLAS</span></h1>
@@ -578,6 +568,9 @@
                 <!-- SLIDE 4: Shareable Social Card & PNG Download -->
                 <div data-slide="4" class="wrapped-slide hidden space-y-4 my-auto text-center">
                     <div class="p-5 rounded-3xl bg-black border border-stone-800 space-y-3 shadow-xl">
+                        <div class="w-16 h-16 mx-auto rounded-2xl overflow-hidden border border-stone-800">
+                            <img src="logo.png" alt="NOMAD" class="w-full h-full object-contain">
+                        </div>
                         <div class="text-xs font-mono font-bold text-[#E04F33]">NOMAD // ATLAS WRAPPED</div>
                         <div class="text-3xl font-extrabold font-mono text-white" id="wrapCardSummaryCountries">0 / 195 PAESI</div>
                         <div class="text-xs font-mono text-stone-400" id="wrapCardSummaryKm">0 KM PERCORSI • 0% MONDO</div>
