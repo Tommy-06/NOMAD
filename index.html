@@ -2,9 +2,6 @@
 <html lang="it" class="dark">
 <head>
     <meta charset="UTF-8">
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#0D0F12">
-    <link rel="apple-touch-icon" href="logo.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>NOMAD // ATLAS — Travel Tracker</title>
 
@@ -311,7 +308,7 @@
                             <span class="w-2 h-2 rounded-full bg-[#E04F33]"></span>Europa
                         </button>
                         <button data-cont-filter="Asia" class="cont-chip-btn shrink-0 px-2.5 py-1 rounded-lg bg-stone-100 dark:bg-stone-800/70 text-stone-600 dark:text-stone-400 hover:bg-stone-200 dark:hover:bg-stone-800 transition flex items-center gap-1.5">
-                            <span class="w-2 h-2 rounded-full bg-[#7C3AED]"></span>Asia
+                            <span class="w-2 h-2 rounded-full bg-[#19A1A8]"></span>Asia
                         </button>
                         <button data-cont-filter="Americhe" class="cont-chip-btn shrink-0 px-2.5 py-1 rounded-lg bg-stone-100 dark:bg-stone-800/70 text-stone-600 dark:text-stone-400 hover:bg-stone-200 dark:hover:bg-stone-800 transition flex items-center gap-1.5">
                             <span class="w-2 h-2 rounded-full bg-[#2563EB]"></span>Americhe
@@ -402,15 +399,12 @@
                             </button>
                         </div>
 
-                        <div class="grid grid-cols-3 gap-2 font-mono text-xs">
-                            <button id="cardBtnVisited" class="py-2.5 px-2 rounded-xl border border-stone-200 dark:border-stone-800 flex items-center justify-center gap-1 font-bold active:scale-95 transition">
+                        <div class="grid grid-cols-2 gap-2.5 font-mono text-xs">
+                            <button id="cardBtnVisited" class="py-2.5 px-3 rounded-xl border border-stone-200 dark:border-stone-800 flex items-center justify-center gap-1.5 font-bold active:scale-95 transition">
                                 <span>✓ Been</span>
                             </button>
-                            <button id="cardBtnWishlist" class="py-2.5 px-2 rounded-xl border border-stone-200 dark:border-stone-800 flex items-center justify-center gap-1 font-bold active:scale-95 transition">
+                            <button id="cardBtnWishlist" class="py-2.5 px-3 rounded-xl border border-stone-200 dark:border-stone-800 flex items-center justify-center gap-1.5 font-bold active:scale-95 transition">
                                 <span>★ Wish</span>
-                            </button>
-                            <button id="cardBtnClear" class="py-2.5 px-2 rounded-xl border border-stone-200 dark:border-stone-800 flex items-center justify-center gap-1 text-stone-500 hover:text-stone-800 dark:hover:text-stone-200 active:scale-95 transition">
-                                <span>Mancante</span>
                             </button>
                         </div>
 
@@ -668,7 +662,7 @@
 
         const CONTINENT_CONFIG = {
             'Europa': { name: 'Europa', color: '#E04F33', center: [14, 51], scale: 3.4 },
-            'Asia': { name: 'Asia', color: '#7C3AED', center: [92, 31], scale: 2.1 },
+            'Asia': { name: 'Asia', color: '#19A1A8', center: [92, 31], scale: 2.1 },
             'Americhe': { name: 'Americhe', color: '#2563EB', center: [-76, 12], scale: 1.55 },
             'Africa': { name: 'Africa', color: '#16A34A', center: [20, 3], scale: 2.1 },
             'Oceania': { name: 'Oceania', color: '#19A1A8', center: [148, -24], scale: 2.6 }
@@ -2197,13 +2191,16 @@
 
             document.getElementById('closeCardBtn').addEventListener('click', closeCountryCard);
             document.getElementById('cardBtnVisited').addEventListener('click', () => {
-                if (state.selectedCountryId) setCountryStatusExplicit(state.selectedCountryId, 'visited');
+                if (state.selectedCountryId) {
+                    toggleCountryStatus(state.selectedCountryId, 'visited');
+                    syncCardButtons(state.selectedCountryId);
+                }
             });
             document.getElementById('cardBtnWishlist').addEventListener('click', () => {
-                if (state.selectedCountryId) setCountryStatusExplicit(state.selectedCountryId, 'wishlist');
-            });
-            document.getElementById('cardBtnClear').addEventListener('click', () => {
-                if (state.selectedCountryId) setCountryStatusExplicit(state.selectedCountryId, null);
+                if (state.selectedCountryId) {
+                    toggleCountryStatus(state.selectedCountryId, 'wishlist');
+                    syncCardButtons(state.selectedCountryId);
+                }
             });
             document.getElementById('cardSaveDetailsBtn').addEventListener('click', saveCardDetails);
 
