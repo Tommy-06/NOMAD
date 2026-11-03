@@ -5,7 +5,6 @@
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#0D0F12">
     <link rel="apple-touch-icon" href="logo.png">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>NOMAD // ATLAS — Travel Tracker</title>
 
@@ -233,6 +232,11 @@
                         <i data-lucide="book-open-check" class="w-3.5 h-3.5 shrink-0 pointer-events-none"></i>
                         <span class="hidden sm:inline pointer-events-none">PASSAPORTO</span>
                         <span id="passportBadgeCount" class="px-1.5 py-0.2 rounded-full bg-white/20 dark:bg-stone-900/15 text-[10px] pointer-events-none">0</span>
+                    </button>
+
+                    <button id="openWrappedBtn" type="button" class="flex items-center gap-1.5 px-2.5 sm:px-3 py-2 rounded-xl bg-gradient-to-r from-[#E04F33] to-amber-500 hover:opacity-95 text-white text-[11px] sm:text-xs font-mono font-bold tracking-tight active:scale-95 transition shadow-sm cursor-pointer" title="Il tuo NOMAD Wrapped">
+                        <i data-lucide="sparkles" class="w-3.5 h-3.5 shrink-0 pointer-events-none"></i>
+                        <span class="hidden md:inline pointer-events-none">WRAPPED</span>
                     </button>
 
                     <button id="openDataModalBtn" type="button" class="p-2 rounded-xl border border-stone-200 dark:border-stone-800 hover:bg-stone-100 dark:hover:bg-stone-800/60 text-stone-600 dark:text-stone-400 active:scale-95 transition cursor-pointer" title="Impostazioni & Backup File">
@@ -552,6 +556,59 @@
         </div>
     </div>
 
+    <!-- MODAL 4: NOMAD WRAPPED (Stile Spotify Wrapped a Storie Interattive) -->
+    <div id="wrappedModal" class="fixed inset-0 z-50 hidden bg-black/85 backdrop-blur-md flex items-center justify-center p-0 sm:p-4">
+        <div class="relative w-full h-[100dvh] sm:h-[680px] sm:max-h-[92vh] sm:max-w-[400px] sm:rounded-[32px] overflow-hidden shadow-2xl border-0 sm:border border-white/15 bg-[#090B0E] text-white flex flex-col select-none">
+            
+            <!-- Barre di Progresso Storie in alto -->
+            <div class="px-4 pt-3.5 pb-2 z-20 space-y-2.5 bg-gradient-to-b from-black/80 to-transparent">
+                <div class="grid grid-cols-4 gap-1.5" id="wrappedProgressBars">
+                    <div class="h-1 rounded-full bg-white/25 overflow-hidden"><div class="wrapped-bar-fill h-full bg-white transition-all duration-300 w-full"></div></div>
+                    <div class="h-1 rounded-full bg-white/25 overflow-hidden"><div class="wrapped-bar-fill h-full bg-white transition-all duration-300 w-0"></div></div>
+                    <div class="h-1 rounded-full bg-white/25 overflow-hidden"><div class="wrapped-bar-fill h-full bg-white transition-all duration-300 w-0"></div></div>
+                    <div class="h-1 rounded-full bg-white/25 overflow-hidden"><div class="wrapped-bar-fill h-full bg-white transition-all duration-300 w-0"></div></div>
+                </div>
+
+                <!-- Header Wrapped: Logo + Selettore Paese Base + Chiudi -->
+                <div class="flex items-center justify-between gap-2">
+                    <div class="flex items-center gap-2 min-w-0">
+                        <div class="w-7 h-7 rounded-lg overflow-hidden border border-white/20 shrink-0 bg-black">
+                            <svg class="w-full h-full"><use href="#nomad-official-logo"></use></svg>
+                        </div>
+                        <div class="min-w-0">
+                            <span class="font-mono text-[10px] font-bold tracking-widest uppercase text-stone-300 block leading-none">NOMAD // WRAPPED</span>
+                            <div class="flex items-center gap-1 mt-0.5">
+                                <span class="text-[10px] font-mono text-stone-400">Casa:</span>
+                                <select id="wrappedHomeSelect" class="bg-white/10 hover:bg-white/15 text-white font-mono text-[10px] font-bold rounded px-1.5 py-0.5 border border-white/15 focus:outline-none max-w-[135px] truncate cursor-pointer"></select>
+                            </div>
+                        </div>
+                    </div>
+                    <button id="closeWrappedModalBtn" type="button" class="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition shrink-0">
+                        <i data-lucide="x" class="w-4 h-4"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Contenitore delle 4 Slide (Storie) -->
+            <div id="wrappedSlidesContainer" class="flex-1 relative overflow-hidden flex flex-col justify-center px-6 py-4 z-10">
+                <!-- Contenuto iniettato dinamicamente da renderWrappedStory() -->
+            </div>
+
+            <!-- Controlli Navigazione Storie (Indietro / Avanti) -->
+            <div class="px-5 pb-5 pt-2 z-20 flex items-center justify-between gap-3 bg-gradient-to-t from-black/90 to-transparent">
+                <button id="wrappedPrevBtn" type="button" class="px-4 py-2.5 rounded-2xl bg-white/10 hover:bg-white/20 font-mono text-xs font-bold flex items-center gap-1.5 active:scale-95 transition disabled:opacity-30 disabled:pointer-events-none">
+                    <i data-lucide="chevron-left" class="w-4 h-4"></i>
+                    <span>Indietro</span>
+                </button>
+                <span id="wrappedSlideCounter" class="font-mono text-[11px] text-stone-400">1 / 4</span>
+                <button id="wrappedNextBtn" type="button" class="px-5 py-2.5 rounded-2xl bg-white text-stone-950 hover:bg-stone-200 font-mono text-xs font-bold flex items-center gap-1.5 active:scale-95 transition shadow-lg">
+                    <span id="wrappedNextBtnText">Avanti</span>
+                    <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- SCRIPT APPLICATION LOGIC -->
     <script>
         // Generazione automatica dell'icona PNG ad alta risoluzione (512x512) per Apple Touch Icon, Android PWA Manifest e Download
@@ -829,16 +886,23 @@
 
         const COUNTRY_BY_ID = {};
         const COUNTRY_BY_NUM = {};
+        const COUNTRY_COORDS = {}; // Coordinate [lon, lat] di tutti i 195 paesi per il calcolo preciso dei km
         COUNTRIES_DATA.forEach(c => {
             COUNTRY_BY_ID[c.id] = c;
             COUNTRY_BY_NUM[String(Number(c.num))] = c;
             COUNTRY_BY_NUM[c.num] = c;
+            if (c.coords) {
+                COUNTRY_COORDS[c.id] = c.coords;
+            }
         });
 
         const STORAGE_KEY = 'nomad_atlas_records_v1';
+        const HOME_STORAGE_KEY = 'nomad_atlas_home_country_v1';
 
         const state = {
             records: {},
+            homeCountryId: 'ITA',
+            wrappedSlideIndex: 0,
             showMicroPins: true,
             onlyMicroFilter: false,
             searchQuery: '',
@@ -858,6 +922,10 @@
                         state.records = parsed;
                     }
                 }
+                const savedHome = localStorage.getItem(HOME_STORAGE_KEY);
+                if (savedHome && COUNTRY_BY_ID[savedHome]) {
+                    state.homeCountryId = savedHome;
+                }
             } catch (e) {
                 console.warn('Impossibile leggere localStorage:', e);
             }
@@ -866,6 +934,7 @@
         function persistRecords() {
             try {
                 localStorage.setItem(STORAGE_KEY, JSON.stringify(state.records));
+                localStorage.setItem(HOME_STORAGE_KEY, state.homeCountryId);
             } catch (e) {
                 console.warn('Impossibile salvare su localStorage:', e);
             }
@@ -965,6 +1034,17 @@
                 const worldTopo = await response.json();
                 const geoFeatures = topojson.feature(worldTopo, worldTopo.objects.countries).features;
                 const validFeatures = geoFeatures.filter(f => f.id !== "010" && f.properties?.name !== "Antarctica");
+
+                // Calcola i centroidi geografici [lon, lat] di ogni nazione per calcolare i km nel Wrapped
+                validFeatures.forEach(f => {
+                    const c = matchFeatureToCountry(f);
+                    if (c && !COUNTRY_COORDS[c.id]) {
+                        const centroid = d3.geoCentroid(f);
+                        if (centroid && !isNaN(centroid[0]) && !isNaN(centroid[1])) {
+                            COUNTRY_COORDS[c.id] = centroid;
+                        }
+                    }
+                });
 
                 HORIZONTAL_OFFSETS.forEach(offsetIndex => {
                     const copyGroup = gCountries.append('g')
@@ -1625,6 +1705,445 @@
             renderSidebarChecklist();
         }
 
+        // ============================================================================
+        // NOMAD WRAPPED — CALCOLO DISTANZE HAVERSINE & EQUIVALENZE GIOCOSE
+        // ============================================================================
+        function calculateHaversineKm(coords1, coords2) {
+            if (!coords1 || !coords2) return 0;
+            const toRad = deg => (deg * Math.PI) / 180;
+            const R = 6371; // Raggio medio terrestre in km
+            const dLat = toRad(coords2[1] - coords1[1]);
+            const dLon = toRad(coords2[0] - coords1[0]);
+            const lat1 = toRad(coords1[1]);
+            const lat2 = toRad(coords2[1]);
+
+            const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                      Math.sin(dLon / 2) * Math.sin(dLon / 2) * Math.cos(lat1) * Math.cos(lat2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            return R * c;
+        }
+
+        function computeWrappedStats() {
+            const homeCountry = COUNTRY_BY_ID[state.homeCountryId] || COUNTRY_BY_ID['ITA'];
+            const homeCoords = COUNTRY_COORDS[homeCountry.id] || [12.5, 42.5];
+
+            const visitedCountries = COUNTRIES_DATA.filter(c => state.records[c.id]?.status === 'visited');
+            const wishlistCountries = COUNTRIES_DATA.filter(c => state.records[c.id]?.status === 'wishlist');
+
+            let totalOneWayKm = 0;
+            let furthestCountry = null;
+            let maxDistKm = 0;
+            let closestCountry = null;
+            let minDistKm = Infinity;
+            let totalCitiesCount = 0;
+
+            const contCounts = { 'Europa': 0, 'Asia': 0, 'Americhe': 0, 'Africa': 0, 'Oceania': 0 };
+
+            visitedCountries.forEach(c => {
+                contCounts[c.cont] = (contCounts[c.cont] || 0) + 1;
+                const rec = state.records[c.id];
+                if (rec?.cities) {
+                    const split = rec.cities.split(',').map(s => s.trim()).filter(Boolean);
+                    totalCitiesCount += split.length;
+                }
+
+                if (c.id !== homeCountry.id) {
+                    const targetCoords = COUNTRY_COORDS[c.id];
+                    if (targetCoords) {
+                        const dist = calculateHaversineKm(homeCoords, targetCoords);
+                        totalOneWayKm += dist;
+                        if (dist > maxDistKm) {
+                            maxDistKm = dist;
+                            furthestCountry = c;
+                        }
+                        if (dist < minDistKm && dist > 10) {
+                            minDistKm = dist;
+                            closestCountry = c;
+                        }
+                    }
+                } else {
+                    // Se ha visitato il proprio paese di base, aggiungiamo una stima media di esplorazione nazionale
+                    totalOneWayKm += 450;
+                }
+            });
+
+            // Calcoliamo andata e ritorno complessivi
+            const totalRoundTripKm = Math.round(totalOneWayKm * 2);
+
+            // Continente preferito
+            let topContinent = 'Europa';
+            let topContCount = -1;
+            Object.entries(contCounts).forEach(([k, v]) => {
+                if (v > topContCount) {
+                    topContCount = v;
+                    topContinent = k;
+                }
+            });
+
+            // Curiosità & Equivalenze divertenti
+            // 1 trancio di pizza XXL = 25 cm = 0.00025 km -> 4.000 tranci per km
+            const pizzaSlices = Math.round(totalRoundTripKm * 4000);
+            // Tazzine di espresso messe in fila (6 cm l'una)
+            const espressoCups = Math.round((totalRoundTripKm * 1000) / 0.06);
+            // Giri dell'Equatore (40.075 km)
+            const earthLaps = (totalRoundTripKm / 40075).toFixed(2);
+            // Percentuale distanza Terra-Luna (384.400 km)
+            const moonPct = Math.min(999, ((totalRoundTripKm / 384400) * 100)).toFixed(1);
+            // Maratone corse (42,195 km)
+            const marathons = Math.round(totalRoundTripKm / 42.195);
+            // Ore in volo stimate (velocità di crociera 850 km/h)
+            const flightHours = Math.round(totalRoundTripKm / 850);
+            // Ore di ascolto di "500 Miles" dei Proclaimers (3.5 min a canzone)
+            const songsPlayed = Math.round((flightHours * 60) / 3.5);
+
+            // Personalità / Archetipo Spotify Wrapped
+            let personaTitle = "SOGNATORE DA DIVANO";
+            let personaSub = "Hai il passaporto nuovo di zecca: il mondo là fuori aspetta solo il tuo primo timbro!";
+            let personaBadge = "🛋️ LIVELLO 0";
+
+            if (visitedCountries.length >= 1 && visitedCountries.length < 5) {
+                personaTitle = "WEEKEND WARRIOR";
+                personaSub = "Zaino sempre pronto sulla sedia: ogni ponte festivo è una scusa scientificamente valida per decollare.";
+                personaBadge = "🎒 ESPLORATORE AGILE";
+            } else if (visitedCountries.length >= 5 && visitedCountries.length < 15) {
+                personaTitle = "CACCIATORE DI TIMBRI";
+                personaSub = "Conosci a memoria i controlli di sicurezza e scegli il posto finestrino con precisione chirurgica.";
+                personaBadge = "🛂 COLLEZIONISTA DI CONFINI";
+            } else if (visitedCountries.length >= 15 && visitedCountries.length < 35) {
+                personaTitle = "FUSO ORARIO VIVENTE";
+                personaSub = "Il jet-lag non ti spaventa più: il tuo orologio biologico batte direttamente sul meridiano di Greenwich.";
+                personaBadge = "✈️ NOMADE D'ASSALTO";
+            } else if (visitedCountries.length >= 35) {
+                personaTitle = " CITTADINO DELL'ATLANTE";
+                personaSub = "Le compagnie aeree ti chiedono consiglio sulle rotte. Hai visto più orizzonti tu di un satellite meteo!";
+                personaBadge = "🌍 LEGGENDA GLOBALE";
+            }
+
+            return {
+                homeCountry,
+                visitedCount: visitedCountries.length,
+                wishlistCount: wishlistCountries.length,
+                worldPct: Math.round((visitedCountries.length / 195) * 100),
+                totalRoundTripKm,
+                furthestCountry,
+                maxDistKm: Math.round(maxDistKm),
+                closestCountry,
+                minDistKm: minDistKm === Infinity ? 0 : Math.round(minDistKm),
+                topContinent: visitedCountries.length > 0 ? topContinent : 'Nessuno',
+                topContCount: visitedCountries.length > 0 ? topContCount : 0,
+                totalCitiesCount,
+                pizzaSlices,
+                espressoCups,
+                earthLaps,
+                moonPct,
+                marathons,
+                flightHours,
+                songsPlayed,
+                personaTitle,
+                personaSub,
+                personaBadge
+            };
+        }
+
+        function populateHomeCountrySelect() {
+            const select = document.getElementById('wrappedHomeSelect');
+            if (!select) return;
+            const sorted = [...COUNTRIES_DATA].sort((a, b) => a.name.localeCompare(b.name, 'it'));
+            select.innerHTML = sorted.map(c =>
+                `<option value="${c.id}" class="bg-stone-900 text-white" ${c.id === state.homeCountryId ? 'selected' : ''}>${c.flag} ${c.name}</option>`
+            ).join('');
+        }
+
+        function renderWrappedStory() {
+            const container = document.getElementById('wrappedSlidesContainer');
+            const stats = computeWrappedStats();
+            const idx = state.wrappedSlideIndex;
+
+            // Aggiorna barre di progresso
+            document.querySelectorAll('#wrappedProgressBars .wrapped-bar-fill').forEach((bar, i) => {
+                bar.style.width = i <= idx ? '100%' : '0%';
+            });
+
+            document.getElementById('wrappedSlideCounter').textContent = `${idx + 1} / 4`;
+            document.getElementById('wrappedPrevBtn').disabled = idx === 0;
+            document.getElementById('wrappedNextBtnText').textContent = idx === 3 ? 'Chiudi' : 'Avanti';
+
+            const fmt = n => n.toLocaleString('it-IT');
+
+            if (idx === 0) {
+                // SLIDE 1: KM TOTALI DA CASA & RECORD DI LONTANANZA
+                container.innerHTML = `
+                    <div class="space-y-5 my-auto animate-fadeIn">
+                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#E04F33]/20 border border-[#E04F33]/40 text-[#E04F33] font-mono text-[11px] font-bold">
+                            <span>📍 PARTENDO DA: ${stats.homeCountry.flag} ${stats.homeCountry.name.toUpperCase()}</span>
+                        </div>
+
+                        <div class="space-y-1">
+                            <p class="font-mono text-xs uppercase tracking-widest text-stone-400">Chilometri Totali (A/R)</p>
+                            <div class="text-4xl sm:text-5xl font-black tracking-tight font-mono text-transparent bg-clip-text bg-gradient-to-r from-white via-amber-200 to-[#E04F33]">
+                                ${fmt(stats.totalRoundTripKm)} <span class="text-xl font-bold text-stone-300">km</span>
+                            </div>
+                            <p class="text-xs text-stone-400 leading-relaxed">
+                                Calcolati in linea d'aria (andata e ritorno) tra ${stats.homeCountry.name} e i tuoi <strong>${stats.visitedCount} paesi visitati</strong>.
+                            </p>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-2.5 pt-2">
+                            <div class="p-3.5 rounded-2xl bg-white/5 border border-white/10 space-y-1">
+                                <span class="text-[10px] font-mono uppercase text-stone-400 block">Giri della Terra</span>
+                                <span class="text-xl font-mono font-bold text-amber-400">🌍 ${stats.earthLaps}x</span>
+                                <span class="text-[10px] text-stone-400 block">lungo l'Equatore</span>
+                            </div>
+                            <div class="p-3.5 rounded-2xl bg-white/5 border border-white/10 space-y-1">
+                                <span class="text-[10px] font-mono uppercase text-stone-400 block">Verso la Luna</span>
+                                <span class="text-xl font-mono font-bold text-purple-400">🚀 ${stats.moonPct}%</span>
+                                <span class="text-[10px] text-stone-400 block">della rotta lunare</span>
+                            </div>
+                        </div>
+
+                        ${stats.furthestCountry ? `
+                            <div class="p-4 rounded-2xl bg-gradient-to-br from-[#E04F33]/25 to-purple-900/20 border border-white/15 flex items-center justify-between gap-3">
+                                <div class="min-w-0">
+                                    <span class="text-[10px] font-mono uppercase tracking-wider text-amber-300 block">Meta più lontana da casa</span>
+                                    <h4 class="font-bold text-base truncate mt-0.5">${stats.furthestCountry.flag} ${stats.furthestCountry.name}</h4>
+                                    <span class="font-mono text-xs text-stone-300">a ben <strong>${fmt(stats.maxDistKm)} km</strong> di distanza</span>
+                                </div>
+                                <span class="text-3xl shrink-0">🧭</span>
+                            </div>
+                        ` : `
+                            <div class="p-4 rounded-2xl bg-white/5 border border-white/10 text-xs text-stone-400 font-mono text-center">
+                                Spunta almeno un paese diverso da ${stats.homeCountry.name} per sbloccare il record di distanza!
+                            </div>
+                        `}
+                    </div>
+                `;
+            } else if (idx === 1) {
+                // SLIDE 2: UNITA' DI MISURA ASSURDE & GIOCOSE (PIZZA, CAFFE, MARATONE)
+                container.innerHTML = `
+                    <div class="space-y-4 my-auto">
+                        <div>
+                            <span class="font-mono text-[11px] uppercase tracking-widest text-amber-400 font-bold">🍕 LA SCIENZA DEL VIAGGIO</span>
+                            <h3 class="text-2xl font-black tracking-tight mt-1">I tuoi ${fmt(stats.totalRoundTripKm)} km misurati in cose serie:</h3>
+                        </div>
+
+                        <div class="space-y-2.5">
+                            <div class="p-3.5 rounded-2xl bg-gradient-to-r from-amber-500/20 to-orange-600/10 border border-amber-500/30 flex items-center gap-3.5">
+                                <span class="text-3xl shrink-0">🍕</span>
+                                <div class="min-w-0">
+                                    <div class="font-mono text-base sm:text-lg font-black text-amber-300">${fmt(stats.pizzaSlices)} tranci di pizza</div>
+                                    <p class="text-[11px] text-stone-300 leading-snug">Hai viaggiato per l'equivalente di ${fmt(stats.pizzaSlices)} fette di Margherita messe in fila indiana!</p>
+                                </div>
+                            </div>
+
+                            <div class="p-3.5 rounded-2xl bg-white/5 border border-white/10 flex items-center gap-3.5">
+                                <span class="text-3xl shrink-0">☕</span>
+                                <div class="min-w-0">
+                                    <div class="font-mono text-base font-bold text-stone-100">${fmt(stats.espressoCups)} tazzine di caffè</div>
+                                    <p class="text-[11px] text-stone-400 leading-snug">Una scia ininterrotta di espressi fumanti dal tuo zerbino fino all'altro capo del mondo.</p>
+                                </div>
+                            </div>
+
+                            <div class="p-3.5 rounded-2xl bg-white/5 border border-white/10 flex items-center gap-3.5">
+                                <span class="text-3xl shrink-0">🏃</span>
+                                <div class="min-w-0">
+                                    <div class="font-mono text-base font-bold text-emerald-400">${fmt(stats.marathons)} maratone olimpiche</div>
+                                    <p class="text-[11px] text-stone-400 leading-snug">Fortuna che esistono gli aerei: a piedi avresti consumato ${Math.max(1, Math.round(stats.totalRoundTripKm / 800))} paia di scarpe!</p>
+                                </div>
+                            </div>
+
+                            <div class="p-3.5 rounded-2xl bg-white/5 border border-white/10 flex items-center gap-3.5">
+                                <span class="text-3xl shrink-0">🎧</span>
+                                <div class="min-w-0">
+                                    <div class="font-mono text-base font-bold text-sky-400">~${fmt(stats.flightHours)} ore in volo</div>
+                                    <p class="text-[11px] text-stone-400 leading-snug">Abbastanza per ascoltare <em>"I'm Gonna Be (500 Miles)"</em> per <strong>${fmt(stats.songsPlayed)} volte</strong> di fila.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else if (idx === 2) {
+                // SLIDE 3: PERSONALITA' DI VIAGGIO & CONTINENTE DOMINANTE
+                const topColor = getContinentColor(stats.topContinent);
+                container.innerHTML = `
+                    <div class="space-y-5 my-auto text-center">
+                        <div class="inline-block px-3 py-1 rounded-full bg-white/10 border border-white/20 font-mono text-[11px] font-bold text-amber-300">
+                            ${stats.personaBadge}
+                        </div>
+
+                        <div class="space-y-2">
+                            <p class="font-mono text-[11px] uppercase tracking-widest text-stone-400">Il tuo Archetipo Nomad è</p>
+                            <h3 class="text-3xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-br from-white via-stone-100 to-amber-400 leading-tight">
+                                ${stats.personaTitle}
+                            </h3>
+                            <p class="text-xs text-stone-300 max-w-xs mx-auto leading-relaxed">
+                                "${stats.personaSub}"
+                            </p>
+                        </div>
+
+                        <div class="p-4 rounded-2xl bg-white/5 border border-white/10 text-left space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="text-[10px] font-mono uppercase text-stone-400">Continente del Cuore</span>
+                                <span class="font-mono text-xs font-bold px-2 py-0.5 rounded" style="background-color:${topColor}30; color:${topColor}">
+                                    ${stats.topContinent.toUpperCase()}
+                                </span>
+                            </div>
+                            <div class="grid grid-cols-3 gap-2 pt-1 border-t border-white/10 text-center font-mono">
+                                <div>
+                                    <div class="text-lg font-bold text-white">${stats.visitedCount}</div>
+                                    <div class="text-[10px] text-stone-400">Paesi ✓</div>
+                                </div>
+                                <div>
+                                    <div class="text-lg font-bold text-amber-400">${stats.totalCitiesCount}</div>
+                                    <div class="text-[10px] text-stone-400">Città 📍</div>
+                                </div>
+                                <div>
+                                    <div class="text-lg font-bold text-emerald-400">${stats.worldPct}%</div>
+                                    <div class="text-[10px] text-stone-400">Mondo 🌍</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                // SLIDE 4: CARD RIASSUNTIVA PRONTA DA SCARICARE & CONDIVIDERE
+                container.innerHTML = `
+                    <div class="space-y-4 my-auto">
+                        <div class="p-5 rounded-3xl bg-gradient-to-br from-[#161922] via-[#0F1218] to-[#1F1615] border border-white/15 shadow-2xl space-y-4 relative overflow-hidden">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-2.5">
+                                    <div class="w-9 h-9 rounded-xl overflow-hidden border border-white/20 bg-black">
+                                        <svg class="w-full h-full"><use href="#nomad-official-logo"></use></svg>
+                                    </div>
+                                    <div>
+                                        <div class="font-mono font-bold text-xs tracking-tight">NOMAD // WRAPPED</div>
+                                        <div class="font-mono text-[10px] text-stone-400">Base: ${stats.homeCountry.flag} ${stats.homeCountry.name}</div>
+                                    </div>
+                                </div>
+                                <span class="font-mono text-xs font-bold px-2.5 py-1 rounded-lg bg-[#E04F33] text-white">${stats.worldPct}% MONDO</span>
+                            </div>
+
+                            <div class="py-2 border-y border-white/10 grid grid-cols-2 gap-3 font-mono">
+                                <div>
+                                    <span class="text-[10px] text-stone-400 uppercase block">Distanza Totale</span>
+                                    <span class="text-lg font-black text-white">${fmt(stats.totalRoundTripKm)} km</span>
+                                </div>
+                                <div>
+                                    <span class="text-[10px] text-stone-400 uppercase block">Paesi Esplorati</span>
+                                    <span class="text-lg font-black text-amber-400">${stats.visitedCount} / 195</span>
+                                </div>
+                                <div>
+                                    <span class="text-[10px] text-stone-400 uppercase block">Equivalenza Pizza</span>
+                                    <span class="text-xs font-bold text-stone-200">🍕 ${fmt(stats.pizzaSlices)} fette</span>
+                                </div>
+                                <div>
+                                    <span class="text-[10px] text-stone-400 uppercase block">Giri del Pianeta</span>
+                                    <span class="text-xs font-bold text-stone-200">🌍 ${stats.earthLaps} giri</span>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center justify-between text-[11px] font-mono">
+                                <span class="text-stone-400">RANK: <strong class="text-white">${stats.personaTitle}</strong></span>
+                                <span class="text-[#E04F33] font-bold">nomad.atlas</span>
+                            </div>
+                        </div>
+
+                        <button id="downloadWrappedCardBtn" type="button" class="w-full py-3 px-4 rounded-2xl bg-gradient-to-r from-[#E04F33] to-amber-500 text-white font-mono text-xs font-bold flex items-center justify-center gap-2 shadow-lg active:scale-95 transition cursor-pointer">
+                            <i data-lucide="download" class="w-4 h-4"></i>
+                            <span>Scarica Card per le Storie (.PNG)</span>
+                        </button>
+                    </div>
+                `;
+
+                lucide.createIcons();
+                const dlBtn = document.getElementById('downloadWrappedCardBtn');
+                if (dlBtn) {
+                    dlBtn.addEventListener('click', () => downloadShareableWrappedPng(stats));
+                }
+            }
+        }
+
+        // Genera un'immagine PNG 1080x1920 (Formato Storia Instagram/WhatsApp) con tutti i dati del Wrapped
+        function downloadShareableWrappedPng(stats) {
+            const canvas = document.createElement('canvas');
+            canvas.width = 1080;
+            canvas.height = 1920;
+            const ctx = canvas.getContext('2d');
+            const fmt = n => n.toLocaleString('it-IT');
+
+            // Sfondo gradiente scuro
+            const grad = ctx.createLinearGradient(0, 0, 1080, 1920);
+            grad.addColorStop(0, '#0B0D11');
+            grad.addColorStop(0.5, '#131720');
+            grad.addColorStop(1, '#1F1412');
+            ctx.fillStyle = grad;
+            ctx.fillRect(0, 0, 1080, 1920);
+
+            // Cerchio decorativo glow
+            const radial = ctx.createRadialGradient(540, 500, 50, 540, 500, 520);
+            radial.addColorStop(0, 'rgba(224, 79, 51, 0.28)');
+            radial.addColorStop(1, 'rgba(224, 79, 51, 0)');
+            ctx.fillStyle = radial;
+            ctx.fillRect(0, 0, 1080, 1920);
+
+            // Intestazione
+            ctx.fillStyle = '#E04F33';
+            ctx.font = 'bold 34px "Space Mono", monospace';
+            ctx.textAlign = 'center';
+            ctx.fillText('NOMAD // ATLAS — TRAVEL WRAPPED', 540, 160);
+
+            ctx.fillStyle = '#A8A29E';
+            ctx.font = '28px "Space Mono", monospace';
+            ctx.fillText(`BASE DI PARTENZA: ${stats.homeCountry.name.toUpperCase()}`, 540, 215);
+
+            // Box Chilometri Gigante
+            ctx.fillStyle = '#FFFFFF';
+            ctx.font = '900 118px "Inter", sans-serif';
+            ctx.fillText(`${fmt(stats.totalRoundTripKm)} km`, 540, 420);
+
+            ctx.fillStyle = '#FACC15';
+            ctx.font = 'bold 36px "Space Mono", monospace';
+            ctx.fillText(`🌍 ${stats.visitedCount}/195 PAESI (${stats.worldPct}% DEL MONDO)`, 540, 495);
+
+            // Box Equivalenze Giocose
+            const cards = [
+                { title: 'EQUIVALENZA PIZZA MARGHERITA', val: `🍕 ${fmt(stats.pizzaSlices)} tranci in fila` },
+                { title: 'PAUSA CAFFÈ GLOBALE', val: `☕ ${fmt(stats.espressoCups)} tazzine di espresso` },
+                { title: 'GIRI DELL\'EQUATORE', val: `🌐 ${stats.earthLaps} volte intorno alla Terra` },
+                { title: 'DISTANZA TERRA - LUNA', val: `🚀 ${stats.moonPct}% del viaggio lunare` },
+                { title: 'ARCHETIPO VIAGGIATORE', val: `🏆 ${stats.personaTitle}` }
+            ];
+
+            let yPos = 620;
+            cards.forEach(item => {
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.06)';
+                ctx.beginPath();
+                ctx.roundRect(110, yPos, 860, 175, 32);
+                ctx.fill();
+
+                ctx.fillStyle = '#9CA3AF';
+                ctx.font = 'bold 24px "Space Mono", monospace';
+                ctx.textAlign = 'left';
+                ctx.fillText(item.title, 160, yPos + 65);
+
+                ctx.fillStyle = '#FFFFFF';
+                ctx.font = 'bold 42px "Inter", sans-serif';
+                ctx.fillText(item.val, 160, yPos + 130);
+
+                yPos += 210;
+            });
+
+            // Footer
+            ctx.textAlign = 'center';
+            ctx.fillStyle = '#E04F33';
+            ctx.font = 'bold 32px "Space Mono", monospace';
+            ctx.fillText('NOMAD // ATLAS — IL TUO PASSAPORTO DIGITALE', 540, 1790);
+
+            const link = document.createElement('a');
+            link.download = `NOMAD-Wrapped-${stats.totalRoundTripKm}km.png`;
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        }
+
         function setupEventListeners() {
             const searchInput = document.getElementById('countrySearchInput');
             const clearSearchBtn = document.getElementById('clearSearchBtn');
@@ -1839,6 +2358,46 @@
                 refreshAllUI();
                 confirmResetModal.classList.add('hidden');
                 dataModal.classList.add('hidden');
+            });
+
+            // Eventi Modal NOMAD WRAPPED
+            const wrappedModal = document.getElementById('wrappedModal');
+            document.getElementById('openWrappedBtn').addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                closeCountryCard();
+                toggleMobileSidebar(false);
+                populateHomeCountrySelect();
+                state.wrappedSlideIndex = 0;
+                renderWrappedStory();
+                wrappedModal.classList.remove('hidden');
+            });
+            document.getElementById('closeWrappedModalBtn').addEventListener('click', () => {
+                wrappedModal.classList.add('hidden');
+            });
+            wrappedModal.addEventListener('click', (e) => {
+                if (e.target === wrappedModal) {
+                    wrappedModal.classList.add('hidden');
+                }
+            });
+            document.getElementById('wrappedHomeSelect').addEventListener('change', (e) => {
+                state.homeCountryId = e.target.value;
+                persistRecords();
+                renderWrappedStory();
+            });
+            document.getElementById('wrappedPrevBtn').addEventListener('click', () => {
+                if (state.wrappedSlideIndex > 0) {
+                    state.wrappedSlideIndex--;
+                    renderWrappedStory();
+                }
+            });
+            document.getElementById('wrappedNextBtn').addEventListener('click', () => {
+                if (state.wrappedSlideIndex < 3) {
+                    state.wrappedSlideIndex++;
+                    renderWrappedStory();
+                } else {
+                    wrappedModal.classList.add('hidden');
+                }
             });
         }
 
